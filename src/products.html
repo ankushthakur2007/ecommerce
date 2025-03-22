@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase | Products</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .products-hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .products-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .products-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .product-categories {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .category-tag {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .category-tag:hover {
+            background-color: white;
+            color: #333;
+            transform: translateY(-3px);
+        }
+        
+        .products-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+        
+        .filter-sidebar {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+        
+        .filter-section {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .filter-section:last-of-type {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .filter-section h3 {
+            margin: 0 0 15px;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #555;
+            transition: color 0.3s ease;
+        }
+        
+        .filter-group label:hover {
+            color: #4a90e2;
+        }
+        
+        .filter-group input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .price-slider {
+            padding: 10px 0;
+        }
+        
+        .price-slider input[type="range"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .price-inputs {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        #apply-filters, #clear-filters {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #apply-filters {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+        }
+        
+        #apply-filters:hover {
+            background-color: #3a7bc8;
+        }
+        
+        #clear-filters {
+            background-color: transparent;
+            color: #666;
+            border: 1px solid #ddd;
+        }
+        
+        #clear-filters:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .products-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+        
+        .search-bar {
+            display: flex;
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-bar input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .search-bar button {
+            padding: 0 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .search-bar button:hover {
+            background-color: #3a7bc8;
+        }
+        
+        .sort-options {
+            display: flex;
+            align-items: center;
+        }
+        
+        .sort-options label {
+            margin-right: 10px;
+            font-size: 0.95rem;
+            color: #666;
+        }
+        
+        .sort-options select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            color: #333;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        
+        .sort-options select:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+            gap: 20px;
+        }
+        
+        .pagination button {
+            background-color: #f0f0f0;
+            color: #666;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .pagination button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination button:not(.disabled):hover {
+            background-color: #4a90e2;
+            color: white;
+        }
+        
+        .pagination i {
+            font-size: 0.8rem;
+        }
+        
+        #prev-page i {
+            margin-right: 5px;
+        }
+        
+        #next-page i {
+            margin-left: 5px;
+        }
+        
+        #page-numbers {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .current-page {
+            color: #4a90e2;
+            font-weight: bold;
+        }
+        
+        .no-products-found {
+            grid-column: 1 / -1;
+            padding: 50px;
+            text-align: center;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            color: #666;
+        }
+        
+        .no-products-found h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .no-products-found p {
+            margin-bottom: 20px;
+        }
+        
+        .product-count {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .filter-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-tag {
+            background-color: #f0f7ff;
+            color: #4a90e2;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .filter-tag .remove {
+            cursor: pointer;
+            color: #3a7bc8;
+        }
+        
+        .filter-tag .remove:hover {
+            color: #e74c3c;
+        }
+
+        @media (max-width: 992px) {
+            .products-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-sidebar {
+                position: static;
+                margin-bottom: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .sort-options {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            
+            .products-hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>ShopEase</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html" class="active">Products</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="cart-icon">
+                    <a href="cart.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="products-hero">
+        <div class="container">
+            <h1>Discover Our Products</h1>
+            <p>Browse our collection of high-quality products from top brands</p>
+            <div class="product-categories">
+                <div class="category-tag" data-category="electronics">Electronics</div>
+                <div class="category-tag" data-category="clothing">Clothing</div>
+                <div class="category-tag" data-category="home">Home & Kitchen</div>
+                <div class="category-tag" data-category="beauty">Beauty</div>
+                <div class="category-tag" data-category="sports">Sports</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-page">
+        <div class="container">
+            <div class="products-controls">
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="sort-options">
+                    <label for="sort-select">Sort by:</label>
+                    <select id="sort-select">
+                        <option value="default">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name-asc">Name: A to Z</option>
+                        <option value="name-desc">Name: Z to A</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-tags" id="active-filters">
+                <!-- Active filters will be added here dynamically -->
+            </div>
+
+            <div class="products-container">
+                <aside class="filter-sidebar">
+                    <div class="filter-section">
+                        <h3>Categories</h3>
+                        <div class="filter-group">
+                            <label><input type="checkbox" name="category" value="electronics"> Electronics</label>
+                            <label><input type="checkbox" name="category" value="clothing"> Clothing</label>
+                            <label><input type="checkbox" name="category" value="home"> Home & Kitchen</label>
+                            <label><input type="checkbox" name="category" value="beauty"> Beauty</label>
+                            <label><input type="checkbox" name="category" value="sports"> Sports</label>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <h3>Price Range</h3>
+                        <div class="price-slider">
+                            <input type="range" id="price-min" min="0" max="1000" value="0">
+                            <input type="range" id="price-max" min="0" max="1000" value="1000">
+                            <div class="price-inputs">
+                                <div>
+                                    <span>Min:</span>
+                                    <span>$<span id="price-min-value">0</span></span>
+                                </div>
+                                <div>
+                                    <span>Max:</span>
+                                    <span>$<span id="price-max-value">1000</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <h3>Brand</h3>
+                        <div class="filter-group">
+                            <label><input type="checkbox" name="brand" value="apple"> Apple</label>
+                            <label><input type="checkbox" name="brand" value="samsung"> Samsung</label>
+                            <label><input type="checkbox" name="brand" value="nike"> Nike</label>
+                            <label><input type="checkbox" name="brand" value="adidas"> Adidas</label>
+                            <label><input type="checkbox" name="brand" value="sony"> Sony</label>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <h3>Rating</h3>
+                        <div class="filter-group">
+                            <label><input type="checkbox" name="rating" value="4"> 4★ & above</label>
+                            <label><input type="checkbox" name="rating" value="3"> 3★ & above</label>
+                            <label><input type="checkbox" name="rating" value="2"> 2★ & above</label>
+                            <label><input type="checkbox" name="rating" value="1"> 1★ & above</label>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <h3>Availability</h3>
+                        <div class="filter-group">
+                            <label><input type="checkbox" name="availability" value="inStock"> In Stock</label>
+                            <label><input type="checkbox" name="availability" value="onSale"> On Sale</label>
+                            <label><input type="checkbox" name="availability" value="isNew"> New Arrivals</label>
+                        </div>
+                    </div>
+                    <button id="apply-filters" class="btn">Apply Filters</button>
+                    <button id="clear-filters" class="btn-outline">Clear All</button>
+                </aside>
+                
+                <div class="product-results">
+                    <div class="product-count">
+                        Showing <span id="product-count">0</span> products
+                    </div>
+                    <div class="products-grid" id="products-grid">
+                        <!-- Products will be loaded dynamically via JavaScript -->
+                    </div>
+                    
+                    <div class="pagination">
+                        <button id="prev-page" class="btn-small disabled"><i class="fas fa-chevron-left"></i> Previous</button>
+                        <div id="page-numbers">
+                            <span class="current-page">1</span> / <span id="total-pages">1</span>
+                        </div>
+                        <button id="next-page" class="btn-small">Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>ShopEase</h2>
+                    <p>Your one-stop shop for all your needs</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Shopping Street, NY</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                    <p><i class="fas fa-envelope"></i> info@shopease.com</p>
+                </div>
+                <div class="social-links">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/products.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category tags functionality
+            const categoryTags = document.querySelectorAll('.category-tag');
+            
+            categoryTags.forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+                    
+                    // Find and check the corresponding checkbox in the sidebar
+                    const checkbox = document.querySelector(`input[name="category"][value="${category}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        
+                        // Trigger the apply filters button
+                        document.getElementById('apply-filters').click();
+                        
+                        // Scroll to the products section
+                        document.querySelector('.products-page').scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // Price range sliders
+            const priceMin = document.getElementById('price-min');
+            const priceMax = document.getElementById('price-max');
+            const priceMinValue = document.getElementById('price-min-value');
+            const priceMaxValue = document.getElementById('price-max-value');
+            
+            priceMin.addEventListener('input', function() {
+                priceMinValue.textContent = this.value;
+                
+                // Ensure min doesn't exceed max
+                if (parseInt(this.value) > parseInt(priceMax.value)) {
+                    priceMax.value = this.value;
+                    priceMaxValue.textContent = this.value;
+                }
+            });
+            
+            priceMax.addEventListener('input', function() {
+                priceMaxValue.textContent = this.value;
+                
+                // Ensure max doesn't go below min
+                if (parseInt(this.value) < parseInt(priceMin.value)) {
+                    priceMin.value = this.value;
+                    priceMinValue.textContent = this.value;
+                }
+            });
+            
+            // Active filters display functionality would go here in a real implementation
+            // This is just a placeholder for the real functionality that would be in products.js
+            const applyFilters = document.getElementById('apply-filters');
+            const clearFilters = document.getElementById('clear-filters');
+            const activeFilters = document.getElementById('active-filters');
+            
+            applyFilters.addEventListener('click', function() {
+                // This would normally be handled by products.js displayProducts function
+                // Just a visual representation for now
+                updateActiveFilters();
+            });
+            
+            clearFilters.addEventListener('click', function() {
+                // Clear all checkboxes
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                });
+                
+                // Reset price range
+                priceMin.value = 0;
+                priceMax.value = 1000;
+                priceMinValue.textContent = '0';
+                priceMaxValue.textContent = '1000';
+                
+                // Clear active filters
+                activeFilters.innerHTML = '';
+            });
+            
+            function updateActiveFilters() {
+                activeFilters.innerHTML = '';
+                
+                // Get checked categories
+                document.querySelectorAll('input[name="category"]:checked').forEach(cb => {
+                    addFilterTag('Category', cb.value);
+                });
+                
+                // Get checked brands
+                document.querySelectorAll('input[name="brand"]:checked').forEach(cb => {
+                    addFilterTag('Brand', cb.value);
+                });
+                
+                // Get price range if not at default values
+                if (priceMin.value > 0 || priceMax.value < 1000) {
+                    addFilterTag('Price', `$${priceMin.value} - $${priceMax.value}`);
+                }
+                
+                // Get rating filters
+                document.querySelectorAll('input[name="rating"]:checked').forEach(cb => {
+                    addFilterTag('Rating', `${cb.value}★ & above`);
+                });
+                
+                // Get availability filters
+                document.querySelectorAll('input[name="availability"]:checked').forEach(cb => {
+                    let label = cb.value;
+                    if (cb.value === 'inStock') label = 'In Stock';
+                    if (cb.value === 'onSale') label = 'On Sale';
+                    if (cb.value === 'isNew') label = 'New Arrival';
+                    
+                    addFilterTag('Availability', label);
+                });
+            }
+            
+            function addFilterTag(type, value) {
+                const tag = document.createElement('div');
+                tag.className = 'filter-tag';
+                tag.innerHTML = `${type}: ${value} <span class="remove"><i class="fas fa-times"></i></span>`;
+                
+                // Add remove functionality
+                tag.querySelector('.remove').addEventListener('click', function() {
+                    tag.remove();
+                    // In a real implementation, this would also uncheck the corresponding checkbox
+                });
+                
+                activeFilters.appendChild(tag);
+            }
+        });
+    </script>
+</body>
+</html> 

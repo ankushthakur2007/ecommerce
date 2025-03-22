@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase | Product Details</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>ShopEase</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html" class="active">Products</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="cart-icon">
+                    <a href="cart.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1 id="product-name">Product Details</h1>
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / <a href="products.html">Products</a> / <span id="breadcrumb-product-name">Product Name</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="product-detail-section">
+        <div class="container">
+            <div class="product-detail-container">
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img id="main-product-image" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop" alt="Product Image">
+                    </div>
+                    <div class="thumbnail-gallery" id="product-thumbnails">
+                        <!-- Thumbnails will be added dynamically -->
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-badges" id="product-badges">
+                        <!-- Badges will be added dynamically -->
+                    </div>
+                    <h1 id="product-title">Premium Wristwatch</h1>
+                    <div class="product-rating">
+                        <div class="stars" id="product-rating">
+                            <!-- Stars will be added dynamically -->
+                        </div>
+                        <span id="review-count">(24 reviews)</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="current-price" id="current-price">$129.99</span>
+                        <span class="original-price" id="original-price">$159.99</span>
+                        <span class="discount-badge" id="discount-badge">20% OFF</span>
+                    </div>
+                    <div class="product-description">
+                        <p id="product-description">A premium wristwatch with elegant design, water resistance, and long battery life. Perfect for everyday use and special occasions.</p>
+                    </div>
+                    <div class="product-variants">
+                        <div class="variant-group">
+                            <h3>Color</h3>
+                            <div class="color-options" id="color-options">
+                                <!-- Color options will be added dynamically -->
+                            </div>
+                        </div>
+                        <div class="variant-group" id="size-variant-group">
+                            <h3>Size</h3>
+                            <div class="size-options" id="size-options">
+                                <!-- Size options will be added dynamically if applicable -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-quantity">
+                        <h3>Quantity</h3>
+                        <div class="quantity-selector">
+                            <button class="quantity-btn minus" id="decrease-quantity">-</button>
+                            <input type="number" id="quantity" value="1" min="1" max="10">
+                            <button class="quantity-btn plus" id="increase-quantity">+</button>
+                        </div>
+                        <p class="stock-status" id="stock-status">In Stock: <span>12 items</span></p>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn primary-btn" id="add-to-cart-btn">Add to Cart</button>
+                        <button class="btn secondary-btn wishlist-btn" id="add-to-wishlist-btn"><i class="far fa-heart"></i></button>
+                        <button class="btn secondary-btn compare-btn" id="add-to-compare-btn"><i class="fas fa-exchange-alt"></i></button>
+                    </div>
+                    <div class="product-meta">
+                        <p class="sku"><strong>SKU:</strong> <span id="product-sku">WTC-PRO-123</span></p>
+                        <p class="categories"><strong>Category:</strong> <span id="product-category">Accessories</span></p>
+                        <p class="tags"><strong>Tags:</strong> <span id="product-tags">watch, premium, accessories</span></p>
+                    </div>
+                    <div class="product-share">
+                        <p>Share:</p>
+                        <div class="social-share">
+                            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="pinterest"><i class="fab fa-pinterest"></i></a>
+                            <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="product-content-sections">
+        <div class="container">
+            <div class="content-section" id="description-content">
+                <h2 class="section-title">Product Description</h2>
+                <div class="section-content">
+                    <p>This premium wristwatch combines elegant design with outstanding functionality. The watch features a stainless steel case with a genuine leather strap that provides both comfort and durability.</p>
+                    <p>With its water-resistant design, you can wear this watch in any weather condition or even while washing your hands without worry. The scratch-resistant mineral glass face ensures your watch maintains its pristine appearance for years to come.</p>
+                    <p>The watch is powered by a high-quality quartz movement that ensures accurate timekeeping, while the battery life extends up to 5 years with normal use.</p>
+                    <h3>Key Features</h3>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Stainless steel case with genuine leather strap</li>
+                        <li><i class="fas fa-check"></i> Water-resistant up to 30 meters</li>
+                        <li><i class="fas fa-check"></i> Scratch-resistant mineral glass face</li>
+                        <li><i class="fas fa-check"></i> Quartz movement for accurate timekeeping</li>
+                        <li><i class="fas fa-check"></i> Battery life of up to 5 years</li>
+                        <li><i class="fas fa-check"></i> Date display function</li>
+                        <li><i class="fas fa-check"></i> Luminous hands for nighttime readability</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-section" id="specifications-content">
+                <h2 class="section-title">Specifications</h2>
+                <div class="section-content">
+                    <table class="specs-table">
+                        <tbody>
+                            <tr>
+                                <th>Brand</th>
+                                <td>LuxWatch</td>
+                            </tr>
+                            <tr>
+                                <th>Model</th>
+                                <td>Classic 3000</td>
+                            </tr>
+                            <tr>
+                                <th>Case Material</th>
+                                <td>Stainless Steel</td>
+                            </tr>
+                            <tr>
+                                <th>Case Diameter</th>
+                                <td>42mm</td>
+                            </tr>
+                            <tr>
+                                <th>Case Thickness</th>
+                                <td>9mm</td>
+                            </tr>
+                            <tr>
+                                <th>Band Material</th>
+                                <td>Genuine Leather</td>
+                            </tr>
+                            <tr>
+                                <th>Band Width</th>
+                                <td>20mm</td>
+                            </tr>
+                            <tr>
+                                <th>Band Color</th>
+                                <td>Brown, Black, Blue (options)</td>
+                            </tr>
+                            <tr>
+                                <th>Dial Color</th>
+                                <td>White, Black, Blue (options)</td>
+                            </tr>
+                            <tr>
+                                <th>Movement Type</th>
+                                <td>Quartz</td>
+                            </tr>
+                            <tr>
+                                <th>Water Resistance</th>
+                                <td>30 meters (3 ATM)</td>
+                            </tr>
+                            <tr>
+                                <th>Battery Life</th>
+                                <td>Approximately 5 years</td>
+                            </tr>
+                            <tr>
+                                <th>Special Features</th>
+                                <td>Date display, Luminous hands</td>
+                            </tr>
+                            <tr>
+                                <th>Warranty</th>
+                                <td>2 years international warranty</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-section" id="reviews-content">
+                <h2 class="section-title">Customer Reviews <span id="reviews-count">(24)</span></h2>
+                <div class="section-content">
+                    <div class="review-summary">
+                        <div class="average-rating">
+                            <span class="rating-number">4.8</span>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="total-reviews">Based on 24 reviews</span>
+                        </div>
+                        <div class="rating-breakdown">
+                            <div class="rating-bar">
+                                <span>5 Stars</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 75%"></div>
+                                </div>
+                                <span>18</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>4 Stars</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 15%"></div>
+                                </div>
+                                <span>4</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>3 Stars</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 8%"></div>
+                                </div>
+                                <span>2</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>2 Stars</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 0%"></div>
+                                </div>
+                                <span>0</span>
+                            </div>
+                            <div class="rating-bar">
+                                <span>1 Star</span>
+                                <div class="bar">
+                                    <div class="fill" style="width: 0%"></div>
+                                </div>
+                                <span>0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="reviews-list" id="reviews-list">
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="https://i.pravatar.cc/50?img=1" alt="Reviewer" class="reviewer-avatar">
+                                    <div>
+                                        <h4>John Smith</h4>
+                                        <span class="review-date">January 15, 2023</span>
+                                    </div>
+                                </div>
+                                <div class="review-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <h4 class="review-title">Excellent quality and design!</h4>
+                                <p>This watch exceeded my expectations. The build quality is exceptional, and it looks even better in person than in the photos. The leather strap is comfortable, and the watch face is elegant. I've received many compliments since I started wearing it.</p>
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <div class="reviewer-info">
+                                    <img src="https://i.pravatar.cc/50?img=2" alt="Reviewer" class="reviewer-avatar">
+                                    <div>
+                                        <h4>Emma Johnson</h4>
+                                        <span class="review-date">December 3, 2022</span>
+                                    </div>
+                                </div>
+                                <div class="review-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="review-content">
+                                <h4 class="review-title">Great watch, minor issues</h4>
+                                <p>I'm very happy with this purchase. The watch has a classic design that goes with everything. The only reason I'm giving 4 stars instead of 5 is that the date display is a bit small and hard to read. Otherwise, it's perfect!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="load-more-reviews">
+                        <button id="load-more-reviews" class="btn">Load More Reviews</button>
+                    </div>
+                    <div class="write-review">
+                        <button id="write-review-btn" class="btn">Write a Review</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="related-products">
+        <div class="container">
+            <h2 class="section-title">Similar Products</h2>
+            <div class="products-grid" id="similar-products">
+                <!-- Similar products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="container">
+            <h2>Subscribe to our Newsletter</h2>
+            <p>Stay updated with our latest products, offers, and news</p>
+            <form id="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>ShopEase</h2>
+                    <p>Your one-stop shop for all your needs</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Shopping Street, NY</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                    <p><i class="fas fa-envelope"></i> info@shopease.com</p>
+                </div>
+                <div class="social-links">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/product-details.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality removed as requested
+            
+            // Quantity selector
+            const decreaseBtn = document.getElementById('decrease-quantity');
+            const increaseBtn = document.getElementById('increase-quantity');
+            const quantityInput = document.getElementById('quantity');
+            
+            decreaseBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                if (value > 1) {
+                    quantityInput.value = value - 1;
+                }
+            });
+            
+            increaseBtn.addEventListener('click', function() {
+                let value = parseInt(quantityInput.value);
+                let max = parseInt(quantityInput.getAttribute('max'));
+                if (value < max) {
+                    quantityInput.value = value + 1;
+                }
+            });
+            
+            // Review form toggle
+            const writeReviewBtn = document.getElementById('write-review-btn');
+            const cancelReviewBtn = document.getElementById('cancel-review');
+            const reviewFormContainer = document.getElementById('review-form-container');
+            
+            writeReviewBtn.addEventListener('click', function() {
+                reviewFormContainer.style.display = 'block';
+                writeReviewBtn.style.display = 'none';
+            });
+            
+            cancelReviewBtn.addEventListener('click', function() {
+                reviewFormContainer.style.display = 'none';
+                writeReviewBtn.style.display = 'block';
+            });
+            
+            // Rating selector
+            const ratingStars = document.querySelectorAll('.rating-selector i');
+            
+            ratingStars.forEach(star => {
+                star.addEventListener('mouseover', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    
+                    ratingStars.forEach(s => {
+                        const starRating = parseInt(s.getAttribute('data-rating'));
+                        if (starRating <= rating) {
+                            s.classList.remove('far');
+                            s.classList.add('fas');
+                        } else {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                        }
+                    });
+                });
+                
+                star.addEventListener('click', function() {
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    
+                    ratingStars.forEach(s => {
+                        const starRating = parseInt(s.getAttribute('data-rating'));
+                        if (starRating <= rating) {
+                            s.classList.remove('far');
+                            s.classList.add('fas');
+                        } else {
+                            s.classList.remove('fas');
+                            s.classList.add('far');
+                        }
+                    });
+                });
+            });
+            
+            document.querySelector('.rating-selector').addEventListener('mouseout', function() {
+                ratingStars.forEach(star => {
+                    if (star.classList.contains('selected')) {
+                        star.classList.remove('far');
+                        star.classList.add('fas');
+                    } else {
+                        star.classList.remove('fas');
+                        star.classList.add('far');
+                    }
+                });
+            });
+            
+            ratingStars.forEach(star => {
+                star.addEventListener('click', function() {
+                    ratingStars.forEach(s => s.classList.remove('selected'));
+                    
+                    const rating = parseInt(this.getAttribute('data-rating'));
+                    for (let i = 0; i < rating; i++) {
+                        ratingStars[i].classList.add('selected');
+                    }
+                });
+            });
+            
+            // Initialize the product details page
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            
+            if (productId) {
+                // In a real implementation, this would be handled by product-details.js
+                // This is just for demonstration
+                initializeProductDetailsPage(productId);
+            }
+        });
+    </script>
+</body>
+</html> 

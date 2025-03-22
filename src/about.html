@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase | About Us</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-banner {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        .hero-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-banner p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .mission-vision {
+            background-color: #f9f9f9;
+            background-image: url('https://images.unsplash.com/photo-1497091071254-cc9b2ba7c48a?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            padding: 80px 0;
+        }
+        
+        .mission-vision::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .mv-cards {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .mv-card {
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .mv-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-icon {
+            background-color: #f7f7f7;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .card-icon i {
+            font-size: 30px;
+            color: #4a90e2;
+        }
+        
+        .team-section {
+            background-color: #ffffff;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-section::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-color: rgba(74, 144, 226, 0.1);
+            border-radius: 50%;
+            top: -150px;
+            left: -150px;
+            z-index: 0;
+        }
+        
+        .team-section::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background-color: rgba(74, 144, 226, 0.1);
+            border-radius: 50%;
+            bottom: -150px;
+            right: -150px;
+            z-index: 0;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .team-member {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+        
+        .member-image {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .member-image img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .team-member:hover .member-image img {
+            transform: scale(1.1);
+        }
+        
+        .member-info {
+            padding: 20px;
+        }
+        
+        .stats-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 80px 0;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .stat-icon {
+            margin-bottom: 20px;
+        }
+        
+        .stat-icon i {
+            font-size: 40px;
+            color: #4a90e2;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .testimonials-section {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonials-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 30%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=400&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+        }
+        
+        .testimonial-item {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+        
+        .testimonial-author img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .partners-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .partner-logo {
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease;
+        }
+        
+        .partner-logo:hover {
+            transform: scale(1.1);
+        }
+        
+        .cta-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1200&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-buttons {
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .primary-btn {
+            background-color: #4a90e2;
+            color: white;
+            border: 2px solid #4a90e2;
+        }
+        
+        .primary-btn:hover {
+            background-color: transparent;
+            color: #4a90e2;
+        }
+        
+        .secondary-btn {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .secondary-btn:hover {
+            background-color: white;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>ShopEase</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="cart-icon">
+                    <a href="cart.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-banner">
+        <div class="container">
+            <h1>About ShopEase</h1>
+            <p>We're on a mission to transform how the world shops online by creating exceptional experiences.</p>
+        </div>
+    </section>
+
+    <section class="about-intro">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1556745753-b2904692b3cd?q=80&w=500&auto=format&fit=crop" alt="Our Story">
+                </div>
+                <div class="about-text">
+                    <h2>Our Story</h2>
+                    <p>ShopEase was founded in 2010 with a simple yet powerful vision: to create an online shopping experience that truly puts customers first. What began as a small venture operating out of a garage has now grown into a thriving e-commerce platform trusted by millions around the world.</p>
+                    <p>Our journey started when our founder, Jane Smith, experienced firsthand the frustrations of online shopping – confusing websites, hidden fees, and poor customer service. She believed there had to be a better way, and that's how ShopEase was born.</p>
+                    <p>Over the years, we've expanded our product range from just electronics to include fashion, home goods, beauty products, and much more. But our core mission has remained the same: to provide high-quality products at fair prices, with an emphasis on exceptional customer service and transparency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mission-vision">
+        <div class="container">
+            <div class="mv-cards">
+                <div class="mv-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Our Mission</h3>
+                        <p>To simplify online shopping by creating a platform that offers high-quality products, transparent pricing, and exceptional customer service, making it easier for people to find and purchase the items they love.</p>
+                    </div>
+                </div>
+                <div class="mv-card">
+                    <div class="card-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Our Vision</h3>
+                        <p>To become the world's most customer-centric online marketplace, where customers can find anything they might want to buy online, at the best possible prices, with the most convenient shopping experience.</p>
+                    </div>
+                </div>
+                <div class="mv-card">
+                    <div class="card-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Our Values</h3>
+                        <ul>
+                            <li><strong>Customer Obsession:</strong> We start with the customer and work backward.</li>
+                            <li><strong>Transparency:</strong> We believe in clear, honest communication.</li>
+                            <li><strong>Quality:</strong> We never compromise on the quality of our products.</li>
+                            <li><strong>Innovation:</strong> We constantly seek ways to improve the shopping experience.</li>
+                            <li><strong>Sustainability:</strong> We're committed to reducing our environmental impact.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet Our Leadership Team</h2>
+                <p>The passionate individuals who drive our mission forward</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=300&auto=format&fit=crop" alt="Jane Smith">
+                    </div>
+                    <div class="member-info">
+                        <h3>Jane Smith</h3>
+                        <p class="member-position">Founder & CEO</p>
+                        <p class="member-bio">With over 15 years of experience in retail and technology, Jane founded ShopEase with a vision to transform online shopping. Her leadership has been recognized with numerous industry awards.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=300&auto=format&fit=crop" alt="Michael Johnson">
+                    </div>
+                    <div class="member-info">
+                        <h3>Michael Johnson</h3>
+                        <p class="member-position">Chief Technology Officer</p>
+                        <p class="member-bio">Michael leads our technology team, ensuring that ShopEase stays at the forefront of e-commerce innovation. He previously developed software for several Fortune 500 companies.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=300&auto=format&fit=crop" alt="Sarah Chen">
+                    </div>
+                    <div class="member-info">
+                        <h3>Sarah Chen</h3>
+                        <p class="member-position">Chief Operations Officer</p>
+                        <p class="member-bio">Sarah oversees our day-to-day operations, supply chain, and fulfillment processes. Her expertise in logistics has helped ShopEase achieve industry-leading delivery times.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop" alt="David Rodriguez">
+                    </div>
+                    <div class="member-info">
+                        <h3>David Rodriguez</h3>
+                        <p class="member-position">Chief Marketing Officer</p>
+                        <p class="member-bio">David brings creative vision to our marketing efforts, helping ShopEase connect with customers in meaningful ways. His campaigns have won multiple industry awards.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-number" data-count="13">0</div>
+                    <div class="stat-text">Years in Business</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-number" data-count="5">0</div>
+                    <div class="stat-text">Million+ Happy Customers</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stat-number" data-count="100">0</div>
+                    <div class="stat-text">Thousand+ Products</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="stat-number" data-count="50">0</div>
+                    <div class="stat-text">Countries Served</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our Customers Say</h2>
+                <p>Real feedback from real customers</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"ShopEase has completely changed how I shop online. Their website is so intuitive, and I can find exactly what I'm looking for in seconds. The delivery is always on time, and their customer service is exceptional."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop" alt="Customer">
+                            <div>
+                                <h4>Amanda Wilson</h4>
+                                <p>Loyal Customer since 2016</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"What I appreciate most about ShopEase is their transparency. The prices are fair, there are no hidden fees, and returns are hassle-free. It's refreshing to shop with a company that puts customers first."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop" alt="Customer">
+                            <div>
+                                <h4>Robert Thompson</h4>
+                                <p>Loyal Customer since 2018</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="testimonial-content">
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p class="testimonial-text">"I've been shopping with ShopEase for over three years now, and the quality of their products never disappoints. I particularly love their curated collections that help me discover new brands and products."</p>
+                        <div class="testimonial-author">
+                            <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&auto=format&fit=crop" alt="Customer">
+                            <div>
+                                <h4>Emily Parker</h4>
+                                <p>Loyal Customer since 2020</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </section>
+
+    <section class="partners-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Trusted Partners</h2>
+                <p>Working together to bring you the best products and experiences</p>
+            </div>
+            <div class="partners-grid">
+                <div class="partner-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Sony-Logo.png" alt="Partner Logo" width="150">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Samsung-Logo.png" alt="Partner Logo" width="150">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/11/Adidas-Logo.png" alt="Partner Logo" width="150">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/09/Levi-Strauss-Logo.png" alt="Partner Logo" width="150">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Nike-Logo.png" alt="Partner Logo" width="150">
+                </div>
+                <div class="partner-logo">
+                    <img src="https://logos-world.net/wp-content/uploads/2020/09/Apple-Logo.png" alt="Partner Logo" width="150">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Experience the ShopEase Difference?</h2>
+                <p>Join millions of satisfied customers who have discovered a better way to shop online.</p>
+                <div class="cta-buttons">
+                    <a href="products.html" class="btn primary-btn">Start Shopping</a>
+                    <a href="contact.html" class="btn secondary-btn">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="container">
+            <h2>Subscribe to our Newsletter</h2>
+            <p>Stay updated with our latest products, offers, and news</p>
+            <form id="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="btn">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>ShopEase</h2>
+                    <p>Your one-stop shop for all your needs</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Shopping Street, NY</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                    <p><i class="fas fa-envelope"></i> info@shopease.com</p>
+                </div>
+                <div class="social-links">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/utils.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats counter
+            const statNumbers = document.querySelectorAll('.stat-number');
+            
+            function animateStats() {
+                statNumbers.forEach(stat => {
+                    const target = parseInt(stat.getAttribute('data-count'));
+                    const duration = 2000; // Animation duration in milliseconds
+                    const step = target / (duration / 16); // 60fps -> ~16ms per frame
+                    let current = 0;
+                    
+                    const timer = setInterval(() => {
+                        current += step;
+                        if (current >= target) {
+                            clearInterval(timer);
+                            stat.textContent = target;
+                        } else {
+                            stat.textContent = Math.floor(current);
+                        }
+                    }, 16);
+                });
+            }
+            
+            // Simple way to trigger animation when element is in viewport
+            // In production, you might want to use Intersection Observer
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+            
+            function checkIfStatsInView() {
+                const statsSection = document.querySelector('.stats-section');
+                if (isInViewport(statsSection)) {
+                    animateStats();
+                    window.removeEventListener('scroll', checkIfStatsInView);
+                }
+            }
+            
+            window.addEventListener('scroll', checkIfStatsInView);
+            checkIfStatsInView(); // Check once on load
+            
+            // Simple testimonial slider
+            const dots = document.querySelectorAll('.testimonial-dots .dot');
+            const slides = document.querySelectorAll('.testimonial-item');
+            let currentSlide = 0;
+            
+            function goToSlide(n) {
+                slides.forEach(slide => {
+                    slide.style.display = 'none';
+                });
+                dots.forEach(dot => {
+                    dot.classList.remove('active');
+                });
+                
+                slides[n].style.display = 'block';
+                dots[n].classList.add('active');
+                currentSlide = n;
+            }
+            
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                });
+            });
+            
+            // Auto-advance slides
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                goToSlide(currentSlide);
+            }, 6000);
+            
+            // Initialize testimonial slider
+            goToSlide(0);
+        });
+    </script>
+</body>
+</html> 
