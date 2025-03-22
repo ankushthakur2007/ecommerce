@@ -15,8 +15,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update cart count on page load if shopEase global object exists
     window.shopEase?.updateCartCount();
     
+    // Initialize authentication if available
+    if (typeof initAuthentication === 'function') {
+        initAuthentication();
+    }
+    
+    // Initialize wishlist if available
+    if (typeof initWishlist === 'function') {
+        initWishlist();
+    }
+    
     // Initialize search
     initSearch();
+    
+    // Add wishlist buttons to product cards if we're on a product listing page
+    addWishlistButtonsToProducts();
 });
 
 // Mobile Menu
@@ -788,4 +801,86 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Add touch detection
-document.documentElement.className += (("ontouchstart" in document.documentElement) ? ' touch' : ' no-touch'); 
+document.documentElement.className += (("ontouchstart" in document.documentElement) ? ' touch' : ' no-touch');
+
+// Add wishlist buttons to product cards
+function addWishlistButtonsToProducts() {
+    const productCards = document.querySelectorAll('.product-card');
+    
+    if (!productCards.length) return;
+    
+    productCards.forEach(card => {
+        // Check if card already has a wishlist button
+        if (card.querySelector('.wishlist-btn')) return;
+        
+        const cardImage = card.querySelector('.product-image');
+        if (!cardImage) return;
+        
+        const productId = card.dataset.productId;
+        if (!productId) return;
+        
+        // Create wishlist button
+        const wishlistBtn = document.createElement('button');
+        wishlistBtn.className = 'wishlist-btn';
+        wishlistBtn.setAttribute('data-product-id', productId);
+        wishlistBtn.innerHTML = '<i class="far fa-heart"></i>';
+        
+        // Add button to card
+        cardImage.appendChild(wishlistBtn);
+        
+        // Check if product is in wishlist and update button state
+        if (window.shopEase && window.shopEase.isInWishlist && window.shopEase.isInWishlist(productId)) {
+            wishlistBtn.classList.add('in-wishlist');
+            wishlistBtn.querySelector('i').classList.remove('far');
+            wishlistBtn.querySelector('i').classList.add('fas');
+        }
+        
+        // Add click event listener
+        wishlistBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (window.shopEase && window.shopEase.toggleWishlist) {
+                window.shopEase.toggleWishlist(productId);
+                
+                // Update button state
+                if (window.shopEase.isInWishlist(productId)) {
+                    this.classList.add('in-wishlist');
+                    this.querySelector('i').classList.remove('far');
+                    this.querySelector('i').classList.add('fas');
+                } else {
+                    this.classList.remove('in-wishlist');
+                    this.querySelector('i').classList.remove('fas');
+                    this.querySelector('i').classList.add('far');
+                }
+            }
+        });
+    });
+}
+
+// Global object for site functionality
+window.shopEase = window.shopEase || {};
+
+// Show or hide auth modal
+window.shopEase.showAuthModal = function(mode = 'login') {
+    const modal = document.getElementById('auth-modal');
+    const loginContainer = document.getElementById('login-container');
+    const registerContainer = document.getElementById('register-container');
+    const modalTitle = modal.querySelector('.modal-header h2');
+    
+    if (!modal || !loginContainer || !registerContainer || !modalTitle) return;
+    
+    // Set the correct mode
+    if (mode === 'register') {
+        loginContainer.style.display = 'none';
+        registerContainer.style.display = 'block';
+        modalTitle.textContent = 'Create an Account';
+    } else {
+        loginContainer.style.display = 'block';
+        registerContainer.style.display = 'none';
+        modalTitle.textContent = 'Login to Your Account';
+    }
+    
+    // Show the modal
+    modal.style.display = 'block';
+}; 

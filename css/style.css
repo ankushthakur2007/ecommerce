@@ -4956,3 +4956,796 @@ a:focus, button:focus, input:focus, select:focus, textarea:focus {
         width: 40%;
     }
 }
+
+/* Authentication Styles */
+.auth-container {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+.auth-link {
+    color: #333;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.auth-link i {
+    margin-right: 5px;
+}
+
+.user-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.user-menu .user-dropdown {
+    position: absolute;
+    right: 0;
+    top: 35px;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 10px 0;
+    min-width: 180px;
+    z-index: 100;
+    display: none;
+}
+
+.user-menu:hover .user-dropdown {
+    display: block;
+}
+
+.user-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-dropdown li {
+    padding: 8px 15px;
+    transition: background-color 0.3s;
+}
+
+.user-dropdown li:hover {
+    background-color: #f5f5f5;
+}
+
+.user-dropdown a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+}
+
+.user-dropdown a i {
+    margin-right: 8px;
+    width: 16px;
+}
+
+.user-dropdown .divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 5px 0;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow: auto;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 450px;
+    animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+    from {opacity: 0; transform: translateY(-50px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #777;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.form-container {
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.password-hint {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+    font-size: 0.8rem;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-password {
+    color: #666;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.auth-separator {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.auth-separator span {
+    display: inline-block;
+    padding: 0 10px;
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+    color: #777;
+}
+
+.auth-separator:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #eee;
+}
+
+.auth-switch {
+    text-align: center;
+}
+
+.auth-switch a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.auth-error {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+/* Social Login Buttons */
+.social-login {
+    margin-top: 15px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.social-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.social-btn i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.google-btn i {
+    color: #db4437;
+}
+
+.facebook-btn i {
+    color: #3b5998;
+}
+
+/* Account Page Styles */
+.account-section {
+    padding: 40px 0;
+}
+
+.account-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.account-sidebar {
+    flex: 0 0 250px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.account-tabs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.account-tab {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.account-tab:hover {
+    background-color: #f9f9f9;
+}
+
+.account-tab.active {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.account-tab i {
+    margin-right: 10px;
+    width: 16px;
+}
+
+.account-tab:last-child {
+    border-bottom: none;
+}
+
+.account-content {
+    flex: 1;
+    min-width: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 25px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+/* Profile Form */
+.profile-form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+}
+
+.profile-form .form-column {
+    flex: 1;
+    padding: 0 10px;
+    min-width: 250px;
+}
+
+.profile-form .form-actions {
+    margin-top: 20px;
+}
+
+/* Orders Tab */
+.orders-empty {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.orders-empty i {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.orders-empty h3 {
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.orders-empty p {
+    margin-bottom: 20px;
+    color: #999;
+}
+
+/* Addresses Tab */
+.addresses-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.address-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+}
+
+.address-card.default {
+    border-color: #ff6b6b;
+}
+
+.address-card.default:before {
+    content: "Default";
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.address-card h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.address-details {
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.address-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.address-actions button {
+    background: transparent;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 0.9rem;
+}
+
+.address-actions button:hover {
+    color: #ff6b6b;
+}
+
+.add-address-btn {
+    width: 100%;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    color: #777;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-address-btn:hover {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.add-address-btn i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Address Modal */
+.address-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.address-form .form-group:nth-child(1),
+.address-form .form-group:nth-child(5),
+.address-form .form-group:nth-child(7) {
+    grid-column: span 2;
+}
+
+/* Wishlist Styles */
+.wishlist-section {
+    padding: 40px 0;
+    min-height: 500px;
+}
+
+.wishlist-container {
+    position: relative;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0;
+    color: #777;
+}
+
+.loading-spinner i {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #ff6b6b;
+}
+
+.wishlist-empty {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.wishlist-empty i {
+    font-size: 3.5rem;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.wishlist-empty h3 {
+    margin-bottom: 10px;
+    color: #777;
+}
+
+.wishlist-empty p {
+    margin-bottom: 20px;
+    color: #999;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wishlist-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.wishlist-product {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.wishlist-product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.wishlist-product-img {
+    height: 200px;
+    overflow: hidden;
+    position: relative;
+}
+
+.wishlist-product-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.wishlist-product:hover .wishlist-product-img img {
+    transform: scale(1.1);
+}
+
+.wishlist-product-body {
+    padding: 15px;
+}
+
+.wishlist-product-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.wishlist-product-title a {
+    color: #333;
+    text-decoration: none;
+}
+
+.wishlist-product-price {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.current-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #ff6b6b;
+}
+
+.original-price {
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 8px;
+    font-size: 0.9rem;
+}
+
+.wishlist-product-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rating-stars {
+    color: #ffc107;
+    margin-right: 5px;
+}
+
+.rating-count {
+    color: #777;
+    font-size: 0.8rem;
+}
+
+.wishlist-product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.wishlist-product-actions button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.add-to-cart-btn {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+.add-to-cart-btn:hover {
+    background-color: #ff5252;
+}
+
+.remove-from-wishlist-btn {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+.remove-from-wishlist-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* Wishlist Icon */
+.wishlist-icon {
+    position: relative;
+    margin-right: 15px;
+}
+
+.wishlist-icon a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.wishlist-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff6b6b;
+    color: white;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Product Card Wishlist Button */
+.product-card .wishlist-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: background-color 0.3s;
+}
+
+.product-card .wishlist-btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.product-card .wishlist-btn i {
+    color: #777;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.product-card .wishlist-btn.in-wishlist i {
+    color: #ff6b6b;
+}
+
+/* Product Details Wishlist Button */
+.product-info-price-actions .wishlist-btn {
+    background-color: #f5f5f5;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.product-info-price-actions .wishlist-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.product-info-price-actions .wishlist-btn i {
+    margin-right: 8px;
+    color: #777;
+    transition: color 0.3s;
+}
+
+.product-info-price-actions .wishlist-btn.in-wishlist i {
+    color: #ff6b6b;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .account-container {
+        flex-direction: column;
+    }
+    
+    .account-sidebar {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+    
+    .account-tabs {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .account-tab {
+        flex: 0 0 auto;
+        border-bottom: none;
+        border-right: 1px solid #eee;
+        padding: 12px 15px;
+        white-space: nowrap;
+    }
+    
+    .account-tab:last-child {
+        border-right: none;
+    }
+    
+    .profile-form .form-row {
+        flex-direction: column;
+    }
+    
+    .address-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .address-form .form-group:nth-child(1),
+    .address-form .form-group:nth-child(5),
+    .address-form .form-group:nth-child(7) {
+        grid-column: span 1;
+    }
+    
+    .wishlist-products {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .wishlist-products {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 90%;
+    }
+}

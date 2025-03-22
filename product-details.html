@@ -29,6 +29,15 @@
                         <span class="cart-count">0</span>
                     </a>
                 </div>
+                <div class="wishlist-icon">
+                    <a href="wishlist.html">
+                        <i class="far fa-heart"></i>
+                        <span class="wishlist-count">0</span>
+                    </a>
+                </div>
+                <div class="auth-container">
+                    <!-- Will be populated by auth.js -->
+                </div>
                 <div class="mobile-menu-toggle">
                     <span></span>
                     <span></span>
@@ -107,10 +116,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="product-actions">
-                        <button id="add-to-cart" class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
-                        <button id="buy-now" class="btn btn-secondary">Buy Now</button>
-                        <button id="add-to-wishlist" class="btn-icon"><i class="far fa-heart"></i></button>
+                    <div class="product-info-price-actions">
+                        <div class="product-actions">
+                            <button id="add-to-cart" class="btn"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+                            <button id="buy-now" class="btn btn-secondary">Buy Now</button>
+                            <button id="add-to-wishlist" class="wishlist-btn"><i class="far fa-heart"></i> Save to Wishlist</button>
+                        </div>
                     </div>
                     <div class="product-meta">
                         <p><strong>SKU:</strong> <span id="product-sku">ABC123456</span></p>
@@ -317,6 +328,90 @@
         </div>
     </section>
 
+    <!-- Auth Modal -->
+    <div class="modal" id="auth-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to Your Account</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-error" style="display: none;"></div>
+                
+                <div id="login-container" class="form-container">
+                    <form id="login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="login-email">Email Address</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="login-password">Password</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <a href="#" class="forgot-password">Forgot Password?</a>
+                        </div>
+                    </form>
+                    
+                    <div class="auth-separator">
+                        <span>OR</span>
+                    </div>
+                    
+                    <div class="auth-switch">
+                        <p>Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
+                    </div>
+                </div>
+                
+                <div id="register-container" class="form-container" style="display: none;">
+                    <form id="register-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="register-name">Full Name</label>
+                            <input type="text" id="register-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-email">Email Address</label>
+                            <input type="email" id="register-email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-password">Password</label>
+                            <input type="password" id="register-password" required>
+                            <small class="password-hint">Must be at least 6 characters long</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="register-confirm-password">Confirm Password</label>
+                            <input type="password" id="register-confirm-password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="register-terms" required>
+                                I agree to the <a href="#">Terms & Conditions</a>
+                            </label>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </div>
+                    </form>
+                    
+                    <div class="auth-separator">
+                        <span>OR</span>
+                    </div>
+                    
+                    <div class="auth-switch">
+                        <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-content">
@@ -356,8 +451,30 @@
     </footer>
 
     <script src="js/products.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
     <script src="js/product-details.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('auth-modal');
+            const closeModal = document.querySelector('.close-modal');
+            
+            if (closeModal && modal) {
+                closeModal.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                });
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

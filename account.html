@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase | My Account</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>ShopEase</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="cart-icon">
+                    <a href="cart.html">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+                <div class="wishlist-icon">
+                    <a href="wishlist.html">
+                        <i class="far fa-heart"></i>
+                        <span class="wishlist-count">0</span>
+                    </a>
+                </div>
+                <div class="auth-container">
+                    <!-- Will be populated by auth.js -->
+                </div>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="account-section">
+        <div class="container">
+            <div class="page-title">
+                <h1>My Account</h1>
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a> / My Account
+                </div>
+            </div>
+
+            <div class="account-dashboard" id="account-container">
+                <div class="dashboard-sidebar">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="user-details">
+                            <h3 id="sidebar-user-name">John Doe</h3>
+                            <p id="sidebar-user-email">john.doe@example.com</p>
+                        </div>
+                    </div>
+                    <div class="dashboard-nav">
+                        <ul>
+                            <li class="active"><a href="#profile" data-tab="profile"><i class="fas fa-user"></i> Profile</a></li>
+                            <li><a href="#orders" data-tab="orders"><i class="fas fa-box"></i> Orders</a></li>
+                            <li><a href="#addresses" data-tab="addresses"><i class="fas fa-map-marker-alt"></i> Addresses</a></li>
+                            <li><a href="#wishlist" data-tab="wishlist"><i class="far fa-heart"></i> Wishlist</a></li>
+                            <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="dashboard-tab active" id="profile-tab">
+                        <div class="tab-header">
+                            <h2>Profile Information</h2>
+                            <p>Manage your account details</p>
+                        </div>
+                        
+                        <div class="auth-error" style="display: none;"></div>
+                        
+                        <form id="account-form" class="account-form">
+                            <div class="form-group">
+                                <label for="account-name">Full Name</label>
+                                <input type="text" id="account-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="account-email">Email Address</label>
+                                <input type="email" id="account-email" required>
+                            </div>
+                            
+                            <div class="form-divider">
+                                <span>Change Password</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="account-current-password">Current Password</label>
+                                <input type="password" id="account-current-password">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="account-new-password">New Password</label>
+                                <input type="password" id="account-new-password">
+                                <small class="password-hint">Must be at least 6 characters long</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="account-confirm-password">Confirm New Password</label>
+                                <input type="password" id="account-confirm-password">
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="dashboard-tab" id="orders-tab">
+                        <div class="tab-header">
+                            <h2>My Orders</h2>
+                            <p>View and track your orders</p>
+                        </div>
+                        
+                        <div id="orders-container" class="orders-list">
+                            <!-- Will be populated by auth.js -->
+                            <div class="empty-orders">
+                                <div class="empty-icon">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                                <h3>No orders yet</h3>
+                                <p>Start shopping to see your orders here</p>
+                                <a href="products.html" class="btn btn-primary">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-tab" id="addresses-tab">
+                        <div class="tab-header">
+                            <h2>My Addresses</h2>
+                            <p>Manage your shipping addresses</p>
+                            <button class="btn btn-primary add-address-btn" id="add-address-btn">
+                                <i class="fas fa-plus"></i> Add New Address
+                            </button>
+                        </div>
+                        
+                        <div id="addresses-container" class="addresses-list">
+                            <!-- Will be populated by auth.js -->
+                            <div class="empty-addresses">
+                                <div class="empty-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <h3>No addresses yet</h3>
+                                <p>Add a shipping address to make checkout faster</p>
+                                <button class="btn btn-primary add-address-btn">
+                                    <i class="fas fa-plus"></i> Add Address
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-tab" id="wishlist-tab">
+                        <div class="tab-header">
+                            <h2>My Wishlist</h2>
+                            <p>Products you've saved for later</p>
+                        </div>
+                        
+                        <div id="wishlist-container" class="wishlist-products">
+                            <!-- Will be populated by wishlist.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Address Modal -->
+    <div class="modal" id="address-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Address</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="address-form">
+                    <div class="form-group">
+                        <label for="address-name">Full Name</label>
+                        <input type="text" id="address-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address-phone">Phone Number</label>
+                        <input type="tel" id="address-phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address-street">Street Address</label>
+                        <input type="text" id="address-street" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="address-city">City</label>
+                            <input type="text" id="address-city" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address-state">State/Province</label>
+                            <input type="text" id="address-state" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="address-zip">ZIP/Postal Code</label>
+                            <input type="text" id="address-zip" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address-country">Country</label>
+                            <select id="address-country" required>
+                                <option value="">Select Country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="AU">Australia</option>
+                                <!-- Add more countries as needed -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="address-default">
+                            Set as default address
+                        </label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-address">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Address</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h2>ShopEase</h2>
+                    <p>Your one-stop shop for all your needs</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Shopping Street, NY</p>
+                    <p><i class="fas fa-phone"></i> +1 234 567 8900</p>
+                    <p><i class="fas fa-envelope"></i> info@shopease.com</p>
+                </div>
+                <div class="social-links">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 ShopEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Tabs functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.dashboard-nav a[data-tab]');
+            const tabContents = document.querySelectorAll('.dashboard-tab');
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and tabs
+                    tabLinks.forEach(link => link.parentElement.classList.remove('active'));
+                    tabContents.forEach(tab => tab.classList.remove('active'));
+                    
+                    // Add active class to clicked link and corresponding tab
+                    this.parentElement.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+            
+            // Address modal functionality
+            const addAddressBtn = document.getElementById('add-address-btn');
+            const addressModal = document.getElementById('address-modal');
+            const closeModal = document.querySelector('.close-modal');
+            const cancelAddressBtn = document.getElementById('cancel-address');
+            
+            if (addAddressBtn && addressModal) {
+                addAddressBtn.addEventListener('click', function() {
+                    addressModal.style.display = 'block';
+                });
+            }
+            
+            if (closeModal && addressModal) {
+                closeModal.addEventListener('click', function() {
+                    addressModal.style.display = 'none';
+                });
+            }
+            
+            if (cancelAddressBtn && addressModal) {
+                cancelAddressBtn.addEventListener('click', function() {
+                    addressModal.style.display = 'none';
+                });
+            }
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === addressModal) {
+                    addressModal.style.display = 'none';
+                }
+            });
+            
+            // Address form submission
+            const addressForm = document.getElementById('address-form');
+            if (addressForm) {
+                addressForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const address = {
+                        name: document.getElementById('address-name').value,
+                        phone: document.getElementById('address-phone').value,
+                        street: document.getElementById('address-street').value,
+                        city: document.getElementById('address-city').value,
+                        state: document.getElementById('address-state').value,
+                        zip: document.getElementById('address-zip').value,
+                        country: document.getElementById('address-country').value,
+                        isDefault: document.getElementById('address-default').checked
+                    };
+                    
+                    if (window.shopEase.auth && window.shopEase.auth.addAddress) {
+                        const success = window.shopEase.auth.addAddress(address);
+                        
+                        if (success) {
+                            // Close modal and refresh addresses
+                            addressModal.style.display = 'none';
+                            window.shopEase.auth.showNotification('Address added successfully');
+                            window.shopEase.auth.populateAccountPage();
+                            
+                            // Reset form
+                            addressForm.reset();
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
