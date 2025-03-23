@@ -26,6 +26,11 @@ function initializeAuth() {
                     createUserDocument(user);
                 }
                 updateAuthUI();
+                
+                // Redirect to home page if on login page
+                if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                    window.location.href = 'home.html';
+                }
             });
         } else {
             // User is signed out
@@ -34,6 +39,7 @@ function initializeAuth() {
     });
     
     setupAuthEventListeners();
+    setupSocialLogin();
 }
 
 // Setup event listeners for auth-related buttons and forms
@@ -127,6 +133,66 @@ function toggleAuthForms(formToShow) {
     }
 }
 
+// Setup Google login functionality
+function setupSocialLogin() {
+    // Google login button
+    const googleLoginBtn = document.querySelector('.btn-google');
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', function() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('profile');
+            provider.addScope('email');
+            
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    // This gives you a Google Access Token
+                    const credential = result.credential;
+                    const token = credential.accessToken;
+                    
+                    // The signed-in user info
+                    const user = result.user;
+                    
+                    // Check if it's a new user
+                    const isNewUser = result.additionalUserInfo.isNewUser;
+                    
+                    if (isNewUser) {
+                        // Create user document in Firestore
+                        return createUserDocument(user, {
+                            name: user.displayName || '',
+                        });
+                    }
+                })
+                .then(() => {
+                    showNotification('Successfully logged in with Google!');
+                    
+                    // Close modal if it exists
+                    const authModal = document.getElementById('auth-modal');
+                    if (authModal && typeof bootstrap !== 'undefined') {
+                        const modal = bootstrap.Modal.getInstance(authModal);
+                        if (modal) modal.hide();
+                    }
+                    
+                    // Redirect if on login page
+                    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                        window.location.href = 'home.html';
+                    }
+                })
+                .catch((error) => {
+                    console.error("Google login error:", error);
+                    showAuthError('Failed to login with Google. Please try again.');
+                });
+        });
+    }
+    
+    // Facebook login button (can be implemented similarly if needed)
+    const facebookLoginBtn = document.querySelector('.btn-facebook');
+    if (facebookLoginBtn) {
+        facebookLoginBtn.addEventListener('click', function() {
+            showAuthError('Facebook login is not implemented yet');
+        });
+    }
+}
+
 // Handle user login with Firebase
 function handleLogin() {
     const email = document.getElementById('login-email').value;
@@ -150,10 +216,8 @@ function handleLogin() {
             
             showNotification('Login successful! Welcome back.');
             
-            // Redirect if on login page
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-                window.location.href = 'home.html';
-            }
+            // Always redirect to home page after successful login
+            window.location.href = 'home.html';
         })
         .catch((error) => {
             console.error("Login error:", error);
@@ -235,10 +299,8 @@ function handleRegistration() {
             
             showNotification('Registration successful! Welcome to ShopEase.');
             
-            // Redirect if on register page
-            if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-                window.location.href = 'home.html';
-            }
+            // Always redirect to home page after successful registration
+            window.location.href = 'home.html';
         })
         .catch((error) => {
             console.error("Registration error:", error);
