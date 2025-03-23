@@ -1,4 +1,4 @@
-// Wishlist functionality for ShopEase
+// Wishlist functionality for ShopEase using Firebase
 document.addEventListener('DOMContentLoaded', function() {
     initializeWishlist();
 });
@@ -8,289 +8,320 @@ if (!window.shopEase) {
     window.shopEase = {};
 }
 
-// Initialize wishlist functionality
+// Initialize wishlist
 function initializeWishlist() {
-    // Setup wishlist action buttons
     setupWishlistButtons();
-    
-    // Populate wishlist page if we're on it
-    const wishlistContainer = document.getElementById('wishlist-container');
-    if (wishlistContainer) {
+    if (document.getElementById('wishlist-container')) {
         populateWishlistPage();
     }
 }
 
-// Setup event listeners for wishlist buttons
+// Set up wishlist buttons
 function setupWishlistButtons() {
-    // Add to wishlist buttons
-    const addToWishlistButtons = document.querySelectorAll('.add-to-wishlist');
-    
-    addToWishlistButtons.forEach(button => {
+    const wishlistButtons = document.querySelectorAll('.add-to-wishlist');
+    wishlistButtons.forEach(button => {
+        const productId = button.getAttribute('data-product-id');
+        
+        // Check if product is in wishlist
+        isInWishlist(productId).then(inWishlist => {
+            if (inWishlist) {
+                button.classList.add('in-wishlist');
+                button.innerHTML = '<i class="fas fa-heart"></i>';
+            } else {
+                button.classList.remove('in-wishlist');
+                button.innerHTML = '<i class="far fa-heart"></i>';
+            }
+        });
+        
         button.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            // Check if user is logged in
-            if (!window.shopEase.auth || !window.shopEase.auth.isUserLoggedIn()) {
-                // Show authentication modal if it exists
-                const authModal = document.getElementById('auth-modal');
-                if (authModal && typeof bootstrap !== 'undefined') {
-                    const modal = new bootstrap.Modal(authModal);
-                    modal.show();
-                } else {
-                    // Redirect to login page
-                    window.location.href = 'login.html';
-                }
-                return;
-            }
-            
-            const productId = this.getAttribute('data-product-id');
-            if (productId) {
-                addToWishlist(parseInt(productId));
-            }
+            toggleWishlistItem(productId, button);
         });
     });
 }
 
-// Add a product to the wishlist
-function addToWishlist(productId) {
-    // Get user data
-    const userData = window.shopEase.auth.getFullUserData();
-    if (!userData) return;
-    
-    // Get users array from local storage
-    const users = JSON.parse(localStorage.getItem('shopEase_users'));
-    const userIndex = users.findIndex(u => u.id === userData.id);
-    
-    if (userIndex === -1) return;
-    
-    // Initialize wishlist array if it doesn't exist
-    if (!users[userIndex].wishlist) {
-        users[userIndex].wishlist = [];
-    }
-    
-    // Check if product is already in wishlist
-    if (users[userIndex].wishlist.includes(productId)) {
-        window.shopEase.auth.showNotification('This product is already in your wishlist');
+// Toggle wishlist item
+function toggleWishlistItem(productId, button) {
+    if (!firebase.auth().currentUser) {
+        // Redirect to login page if user is not logged in
+        window.location.href = 'index.html';
         return;
     }
     
-    // Add product to wishlist
-    users[userIndex].wishlist.push(productId);
-    
-    // Save updated user data
-    localStorage.setItem('shopEase_users', JSON.stringify(users));
-    
-    // Show success notification
-    window.shopEase.auth.showNotification('Product added to your wishlist');
-    
-    // Update wishlist counter if it exists
-    updateWishlistCounter();
+    isInWishlist(productId).then(inWishlist => {
+        if (inWishlist) {
+            removeFromWishlist(productId).then(() => {
+                button.classList.remove('in-wishlist');
+                button.innerHTML = '<i class="far fa-heart"></i>';
+                shopEase.auth.showNotification('Product removed from wishlist');
+                updateWishlistCounter();
+            });
+        } else {
+            addToWishlist(productId).then(() => {
+                button.classList.add('in-wishlist');
+                button.innerHTML = '<i class="fas fa-heart"></i>';
+                shopEase.auth.showNotification('Product added to wishlist');
+                updateWishlistCounter();
+            });
+        }
+    });
 }
 
-// Remove a product from the wishlist
+// Add product to wishlist
+function addToWishlist(productId) {
+    const user = firebase.auth().currentUser;
+    if (!user) return Promise.reject('User not logged in');
+    
+    const db = firebase.firestore();
+    
+    return db.collection('users').doc(user.uid).get()
+        .then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                let wishlist = userData.wishlist || [];
+                
+                // Only add if not already in wishlist
+                if (!wishlist.includes(productId)) {
+                    wishlist.push(productId);
+                    
+                    return db.collection('users').doc(user.uid).update({
+                        wishlist: wishlist
+                    });
+                }
+                return Promise.resolve();
+            }
+        });
+}
+
+// Remove product from wishlist
 function removeFromWishlist(productId) {
-    // Get user data
-    const userData = window.shopEase.auth.getFullUserData();
-    if (!userData) return;
+    const user = firebase.auth().currentUser;
+    if (!user) return Promise.reject('User not logged in');
     
-    // Get users array from local storage
-    const users = JSON.parse(localStorage.getItem('shopEase_users'));
-    const userIndex = users.findIndex(u => u.id === userData.id);
+    const db = firebase.firestore();
     
-    if (userIndex === -1) return;
-    
-    // Check if wishlist exists
-    if (!users[userIndex].wishlist) return;
-    
-    // Remove product from wishlist
-    users[userIndex].wishlist = users[userIndex].wishlist.filter(id => id !== productId);
-    
-    // Save updated user data
-    localStorage.setItem('shopEase_users', JSON.stringify(users));
-    
-    // Show success notification
-    window.shopEase.auth.showNotification('Product removed from your wishlist');
-    
-    // Update wishlist counter
-    updateWishlistCounter();
-    
-    // Refresh wishlist page if we're on it
-    const wishlistContainer = document.getElementById('wishlist-container');
-    if (wishlistContainer) {
-        populateWishlistPage();
-    }
+    return db.collection('users').doc(user.uid).get()
+        .then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                let wishlist = userData.wishlist || [];
+                
+                // Remove product from wishlist
+                wishlist = wishlist.filter(id => id !== productId);
+                
+                return db.collection('users').doc(user.uid).update({
+                    wishlist: wishlist
+                });
+            }
+        });
 }
 
-// Check if a product is in the wishlist
+// Check if product is in wishlist
 function isInWishlist(productId) {
-    // Get user data
-    const userData = window.shopEase.auth.getFullUserData();
-    if (!userData || !userData.wishlist) return false;
+    const user = firebase.auth().currentUser;
+    if (!user) return Promise.resolve(false);
     
-    return userData.wishlist.includes(productId);
+    const db = firebase.firestore();
+    
+    return db.collection('users').doc(user.uid).get()
+        .then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const wishlist = userData.wishlist || [];
+                return wishlist.includes(productId);
+            }
+            return false;
+        })
+        .catch(() => {
+            return false;
+        });
 }
 
-// Update wishlist counter in the UI
+// Get user's wishlist
+function getUserWishlist() {
+    const user = firebase.auth().currentUser;
+    if (!user) return Promise.resolve([]);
+    
+    const db = firebase.firestore();
+    
+    return db.collection('users').doc(user.uid).get()
+        .then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                return userData.wishlist || [];
+            }
+            return [];
+        })
+        .catch(() => {
+            return [];
+        });
+}
+
+// Update wishlist counter
 function updateWishlistCounter() {
-    const wishlistCounter = document.querySelector('.wishlist-count');
+    const wishlistCounter = document.querySelector('.wishlist-counter');
     if (!wishlistCounter) return;
     
-    // Get user data
-    const userData = window.shopEase.auth.getFullUserData();
-    if (!userData || !userData.wishlist) {
-        wishlistCounter.textContent = '0';
-        return;
-    }
-    
-    wishlistCounter.textContent = userData.wishlist.length.toString();
+    getUserWishlist().then(wishlist => {
+        const count = wishlist.length;
+        wishlistCounter.textContent = count;
+        
+        if (count > 0) {
+            wishlistCounter.style.display = 'block';
+        } else {
+            wishlistCounter.style.display = 'none';
+        }
+    });
 }
 
-// Populate wishlist page with products
+// Populate wishlist page
 function populateWishlistPage() {
     const wishlistContainer = document.getElementById('wishlist-container');
     if (!wishlistContainer) return;
     
-    // Check if user is logged in
-    if (!window.shopEase.auth || !window.shopEase.auth.isUserLoggedIn()) {
+    if (!firebase.auth().currentUser) {
         wishlistContainer.innerHTML = `
-            <div class="empty-wishlist">
-                <div class="empty-icon">
-                    <i class="fas fa-heart-broken"></i>
-                </div>
-                <h3>Your wishlist is empty</h3>
-                <p>Please log in to view your wishlist</p>
-                <a href="#" class="btn btn-primary login-btn" data-bs-toggle="modal" data-bs-target="#auth-modal">Login</a>
+            <div class="empty-state">
+                <i class="fas fa-heart fa-3x"></i>
+                <p>Please log in to view your wishlist.</p>
+                <a href="index.html" class="btn btn-primary">Login</a>
             </div>
         `;
         return;
     }
     
-    // Get user data
-    const userData = window.shopEase.auth.getFullUserData();
-    if (!userData || !userData.wishlist || userData.wishlist.length === 0) {
-        wishlistContainer.innerHTML = `
-            <div class="empty-wishlist">
-                <div class="empty-icon">
-                    <i class="fas fa-heart-broken"></i>
+    getUserWishlist().then(wishlistIds => {
+        if (wishlistIds.length === 0) {
+            wishlistContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-heart fa-3x"></i>
+                    <p>Your wishlist is empty.</p>
+                    <a href="products.html" class="btn btn-primary">Browse Products</a>
                 </div>
-                <h3>Your wishlist is empty</h3>
-                <p>Add items to your wishlist to save them for later</p>
-                <a href="products.html" class="btn btn-primary">Shop Now</a>
-            </div>
-        `;
-        return;
-    }
-    
-    // Get all products
-    const products = window.shopEase.products;
-    if (!products) {
-        wishlistContainer.innerHTML = '<p>Error loading products. Please try again later.</p>';
-        return;
-    }
-    
-    // Filter products in wishlist
-    const wishlistProducts = products.filter(product => userData.wishlist.includes(product.id));
-    
-    // Generate HTML for wishlist products
-    let wishlistHTML = '<div class="wishlist-products">';
-    
-    wishlistProducts.forEach(product => {
-        wishlistHTML += `
-            <div class="wishlist-item">
-                <div class="wishlist-item-image">
-                    <a href="product-details.html?id=${product.id}">
-                        <img src="${product.thumbnail}" alt="${product.name}">
-                    </a>
-                </div>
-                <div class="wishlist-item-info">
-                    <h3><a href="product-details.html?id=${product.id}">${product.name}</a></h3>
-                    <div class="product-rating">
-                        ${generateStarRating(product.rating)}
-                        <span class="rating-count">(${product.reviewCount})</span>
+            `;
+            return;
+        }
+        
+        // Load product data from database
+        const products = window.shopEase.products || [];
+        
+        let wishlistItems = '';
+        let loadedProducts = 0;
+        
+        wishlistIds.forEach(productId => {
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                wishlistItems += `
+                    <div class="wishlist-item">
+                        <div class="wishlist-item-image">
+                            <img src="${product.thumbnail}" alt="${product.name}">
+                        </div>
+                        <div class="wishlist-item-details">
+                            <h4><a href="product-details.html?id=${product.id}">${product.name}</a></h4>
+                            <div class="rating">
+                                ${generateStarRating(product.rating)}
+                                <span class="rating-count">(${product.reviewCount})</span>
+                            </div>
+                            <div class="price-container">
+                                <span class="current-price">$${product.price.toFixed(2)}</span>
+                                ${product.originalPrice ? `<span class="original-price">$${product.originalPrice.toFixed(2)}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="wishlist-item-actions">
+                            <button class="btn btn-primary add-to-cart-from-wishlist" data-product-id="${product.id}">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn btn-danger remove-from-wishlist" data-product-id="${product.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="product-price">
-                        <span class="current-price">$${product.price.toFixed(2)}</span>
-                        ${product.originalPrice > product.price ? 
-                          `<span class="original-price">$${product.originalPrice.toFixed(2)}</span>
-                           <span class="discount-tag">${Math.round((1 - product.price / product.originalPrice) * 100)}% OFF</span>` : ''}
-                    </div>
-                    <div class="product-status">
-                        ${product.inStock ? '<span class="in-stock">In Stock</span>' : '<span class="out-of-stock">Out of Stock</span>'}
-                    </div>
-                </div>
-                <div class="wishlist-item-actions">
-                    <button class="btn btn-primary add-to-cart" data-product-id="${product.id}">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </button>
-                    <button class="btn btn-outline-danger remove-from-wishlist" data-product-id="${product.id}">
-                        <i class="fas fa-trash"></i> Remove
-                    </button>
-                </div>
-            </div>
-        `;
-    });
-    
-    wishlistHTML += '</div>';
-    wishlistContainer.innerHTML = wishlistHTML;
-    
-    // Setup event listeners for action buttons
-    setupWishlistPageButtons();
-}
-
-// Setup event listeners for buttons on the wishlist page
-function setupWishlistPageButtons() {
-    // Add to cart buttons
-    const addToCartButtons = document.querySelectorAll('.wishlist-item .add-to-cart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = parseInt(this.getAttribute('data-product-id'));
-            if (window.shopEase.cart && window.shopEase.cart.addToCart) {
-                window.shopEase.cart.addToCart(productId, 1);
+                `;
+                loadedProducts++;
             }
         });
-    });
-    
-    // Remove from wishlist buttons
-    const removeButtons = document.querySelectorAll('.wishlist-item .remove-from-wishlist');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const productId = parseInt(this.getAttribute('data-product-id'));
-            removeFromWishlist(productId);
-        });
+        
+        if (loadedProducts === 0) {
+            wishlistContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-heart fa-3x"></i>
+                    <p>Your wishlist is empty.</p>
+                    <a href="products.html" class="btn btn-primary">Browse Products</a>
+                </div>
+            `;
+        } else {
+            wishlistContainer.innerHTML = wishlistItems;
+            
+            // Setup remove from wishlist buttons
+            setupWishlistPageButtons();
+        }
     });
 }
 
 // Generate star rating HTML
 function generateStarRating(rating) {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    
     let stars = '';
-    
-    // Add full stars
-    for (let i = 0; i < fullStars; i++) {
-        stars += '<i class="fas fa-star"></i>';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars += '<i class="fas fa-star"></i>';
+        } else if (i - 0.5 <= rating) {
+            stars += '<i class="fas fa-star-half-alt"></i>';
+        } else {
+            stars += '<i class="far fa-star"></i>';
+        }
     }
-    
-    // Add half star if needed
-    if (hasHalfStar) {
-        stars += '<i class="fas fa-star-half-alt"></i>';
-    }
-    
-    // Add empty stars
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-    for (let i = 0; i < emptyStars; i++) {
-        stars += '<i class="far fa-star"></i>';
-    }
-    
     return stars;
+}
+
+// Set up buttons on wishlist page
+function setupWishlistPageButtons() {
+    // Remove from wishlist buttons
+    const removeButtons = document.querySelectorAll('.remove-from-wishlist');
+    removeButtons.forEach(button => {
+        const productId = button.getAttribute('data-product-id');
+        
+        button.addEventListener('click', function() {
+            removeFromWishlist(productId).then(() => {
+                button.closest('.wishlist-item').remove();
+                shopEase.auth.showNotification('Product removed from wishlist');
+                updateWishlistCounter();
+                
+                // Check if wishlist is empty
+                const wishlistItems = document.querySelectorAll('.wishlist-item');
+                if (wishlistItems.length === 0) {
+                    document.getElementById('wishlist-container').innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-heart fa-3x"></i>
+                            <p>Your wishlist is empty.</p>
+                            <a href="products.html" class="btn btn-primary">Browse Products</a>
+                        </div>
+                    `;
+                }
+            });
+        });
+    });
+    
+    // Add to cart buttons
+    const addToCartButtons = document.querySelectorAll('.add-to-cart-from-wishlist');
+    addToCartButtons.forEach(button => {
+        const productId = button.getAttribute('data-product-id');
+        
+        button.addEventListener('click', function() {
+            if (window.shopEase.cart && typeof window.shopEase.cart.addToCart === 'function') {
+                window.shopEase.cart.addToCart(productId, 1);
+            } else {
+                shopEase.auth.showNotification('Cart functionality not available');
+            }
+        });
+    });
 }
 
 // Export functions for use in other files
 window.shopEase.wishlist = {
+    isInWishlist,
     addToWishlist,
     removeFromWishlist,
-    isInWishlist,
-    updateWishlistCounter,
-    populateWishlistPage
+    populateWishlistPage,
+    updateWishlistCounter
 }; 
