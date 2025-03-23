@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
     window.shopEase?.updateCartCount();
     
     // Initialize authentication if available
-    if (typeof initAuthentication === 'function') {
-        initAuthentication();
+    if (typeof initializeAuth === 'function') {
+        initializeAuth();
     }
     
     // Initialize wishlist if available
-    if (typeof initWishlist === 'function') {
-        initWishlist();
+    if (typeof initializeWishlist === 'function') {
+        initializeWishlist();
     }
     
     // Initialize search
