@@ -2,431 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>ShopEase | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopEase | Login</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .hero {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?q=80&w=1600&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            height: 600px;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        
-        .hero-content {
-            max-width: 600px;
-            padding: 30px;
-            position: relative;
-            z-index: 2;
-            color: white;
-        }
-        
-        .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero-content p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero-content .btn {
-            background-color: #4a90e2;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            display: inline-block;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        
-        .hero-content .btn:hover {
-            background-color: #3a7bc8;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .featured-products {
-            padding: 80px 0;
-            background-color: #f9f9f9;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .featured-products::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background-color: rgba(74, 144, 226, 0.1);
-            border-radius: 50%;
-            top: -150px;
-            right: -150px;
-            z-index: 0;
-        }
-        
-        .featured-products h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
-            color: #333;
-            position: relative;
-        }
-        
-        .featured-products h2::after {
-            content: "";
-            display: block;
-            width: 80px;
-            height: 4px;
-            background-color: #4a90e2;
-            margin: 15px auto 0;
-            border-radius: 2px;
-        }
-        
-        .categories {
-            padding: 80px 0;
-            background-color: white;
-        }
-        
-        .categories h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
-            color: #333;
-            position: relative;
-        }
-        
-        .categories h2::after {
-            content: "";
-            display: block;
-            width: 80px;
-            height: 4px;
-            background-color: #4a90e2;
-            margin: 15px auto 0;
-            border-radius: 2px;
-        }
-        
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .category {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .category:hover {
-            transform: translateY(-10px);
-        }
-        
-        .category img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-        
-        .category:hover img {
-            transform: scale(1.05);
-        }
-        
-        .category-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-            padding: 30px 20px 20px;
-            color: white;
-            text-align: center;
-        }
-        
-        .category h3 {
-            margin: 0 0 15px;
-            font-size: 1.5rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-        }
-        
-        .btn-small {
-            background-color: white;
-            color: #333;
-            padding: 8px 20px;
-            border: none;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-block;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .btn-small:hover {
-            background-color: #4a90e2;
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .promo-banner {
-            padding: 60px 0;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?q=80&w=1600&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-        }
-        
-        .promo-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .promo-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .promo-content p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-        }
-        
-        .promo-content .countdown {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-        
-        .countdown-item {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            padding: 15px;
-            margin: 0 10px;
-            min-width: 80px;
-        }
-        
-        .countdown-item span {
-            display: block;
-        }
-        
-        .countdown-item .number {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .countdown-item .label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-        
-        .newsletter {
-            padding: 80px 0;
-            background-color: #f9f9f9;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .newsletter::before {
-            content: "";
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background-color: rgba(74, 144, 226, 0.1);
-            border-radius: 50%;
-            bottom: -150px;
-            left: -150px;
-            z-index: 0;
-        }
-        
-        .newsletter h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            font-size: 2.2rem;
-            color: #333;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .newsletter p {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #666;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        #newsletter-form {
-            display: flex;
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
-        #newsletter-form input {
-            flex: 1;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px 0 0 5px;
-            font-size: 1rem;
-        }
-        
-        #newsletter-form input:focus {
-            outline: none;
-            border-color: #4a90e2;
-        }
-        
-        #newsletter-form button {
-            padding: 0 30px;
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            border-radius: 0 5px 5px 0;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        #newsletter-form button:hover {
-            background-color: #3a7bc8;
-        }
-        
-        .testimonials {
-            padding: 80px 0;
-            background-color: white;
-        }
-        
-        .testimonials h2 {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5rem;
-            color: #333;
-            position: relative;
-        }
-        
-        .testimonials h2::after {
-            content: "";
-            display: block;
-            width: 80px;
-            height: 4px;
-            background-color: #4a90e2;
-            margin: 15px auto 0;
-            border-radius: 2px;
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .testimonial {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        .testimonial::before {
-            content: '\201C';
-            font-size: 80px;
-            color: #4a90e2;
-            opacity: 0.2;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-family: Georgia, serif;
-            line-height: 1;
-        }
-        
-        .testimonial-text {
-            font-style: italic;
-            color: #555;
-            margin-bottom: 20px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-        }
-        
-        .author-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin-right: 15px;
-        }
-        
-        .author-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .author-info h4 {
-            margin: 0 0 5px;
-            color: #333;
-        }
-        
-        .author-info p {
-            margin: 0;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .testimonial-rating {
-            color: #ffc107;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                height: 500px;
-            }
-            
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-            
-            .countdown-item {
-                min-width: 60px;
-                padding: 10px;
-            }
-            
-            .countdown-item .number {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -436,7 +15,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="home.html">Home</a></li>
                     <li><a href="products.html">Products</a></li>
                     <li><a href="categories.html">Categories</a></li>
                     <li><a href="about.html">About</a></li>
@@ -468,155 +47,114 @@
         </div>
     </header>
 
-    <section class="hero">
+    <section class="auth-section">
         <div class="container">
-            <div class="hero-content">
-                <h1 style="color: #ffffff;">Summer Collection 2025</h1>
-                <p>Discover our latest trends with up to 50% off on selected items. Limited time offer.</p>
-                <a href="products.html" class="btn">Shop Now <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
-    </section>
-
-    <section class="featured-products">
-        <div class="container">
-            <h2>Featured Products</h2>
-            <div class="products-grid" id="featured-products">
-                <!-- Products will be loaded dynamically via JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <section class="categories">
-        <div class="container">
-            <h2>Shop by Category</h2>
-            <div class="category-grid">
-                <div class="category">
-                    <img src="https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1400&auto=format&fit=crop" alt="Electronics">
-                    <div class="category-content">
-                        <h3>Electronics</h3>
-                        <a href="products.html?category=electronics" class="btn-small">View All</a>
-                    </div>
-                </div>
-                <div class="category">
-                    <img src="https://images.unsplash.com/photo-1479064555552-3ef4979f8908?q=80&w=1400&auto=format&fit=crop" alt="Clothing">
-                    <div class="category-content">
-                        <h3>Clothing</h3>
-                        <a href="products.html?category=clothing" class="btn-small">View All</a>
-                    </div>
-                </div>
-                <div class="category">
-                    <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1400&auto=format&fit=crop" alt="Home & Kitchen">
-                    <div class="category-content">
-                        <h3>Home & Kitchen</h3>
-                        <a href="products.html?category=home" class="btn-small">View All</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="promo-banner">
-        <div class="container">
-            <div class="promo-content">
-                <h2>Spring Sale Ends Soon!</h2>
-                <p>Don't miss out on our biggest sale of the season. Get up to 70% off on select items.</p>
-                <div class="countdown">
-                    <div class="countdown-item">
-                        <span class="number">02</span>
-                        <span class="label">Days</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="number">18</span>
-                        <span class="label">Hours</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="number">45</span>
-                        <span class="label">Mins</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="number">30</span>
-                        <span class="label">Secs</span>
-                    </div>
-                </div>
-                <a href="products.html?sale=true" class="btn">Shop the Sale</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="testimonials">
-        <div class="container">
-            <h2>What Our Customers Say</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial">
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">I was amazed at the quality of their products and the fast shipping. ShopEase has become my go-to for all my shopping needs!</p>
-                    <div class="testimonial-author">
-                        <div class="author-image">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=120&auto=format&fit=crop" alt="Sarah Johnson">
+            <div class="auth-page">
+                <div class="auth-forms">
+                    <div id="login-container" class="form-container">
+                        <h2>Login to Your Account</h2>
+                        <div class="auth-error" style="display: none;"></div>
+                        
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="login-email">Email Address</label>
+                                <input type="email" id="login-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <input type="password" id="login-password" required>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                                <a href="#" class="forgot-password">Forgot Password?</a>
+                            </div>
+                        </form>
+                        
+                        <div class="auth-separator">
+                            <span>OR</span>
                         </div>
-                        <div class="author-info">
-                            <h4>Sarah Johnson</h4>
-                            <p>Loyal Customer</p>
+                        
+                        <div class="auth-switch">
+                            <p>Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
+                        </div>
+                        
+                        <div class="social-login">
+                            <p>Login with:</p>
+                            <div class="social-buttons">
+                                <button class="btn-social btn-google">
+                                    <i class="fab fa-google"></i> Google
+                                </button>
+                                <button class="btn-social btn-facebook">
+                                    <i class="fab fa-facebook-f"></i> Facebook
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="register-container" class="form-container" style="display: none;">
+                        <h2>Create an Account</h2>
+                        <div class="auth-error" style="display: none;"></div>
+                        
+                        <form id="register-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="register-name">Full Name</label>
+                                <input type="text" id="register-name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-email">Email Address</label>
+                                <input type="email" id="register-email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-password">Password</label>
+                                <input type="password" id="register-password" required>
+                                <small class="password-hint">Must be at least 6 characters long</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="register-confirm-password">Confirm Password</label>
+                                <input type="password" id="register-confirm-password" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="register-terms" required>
+                                    I agree to the <a href="#">Terms & Conditions</a>
+                                </label>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
+                        </form>
+                        
+                        <div class="auth-separator">
+                            <span>OR</span>
+                        </div>
+                        
+                        <div class="auth-switch">
+                            <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial">
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <p class="testimonial-text">The customer service is exceptional. When I had an issue with my order, they resolved it immediately. I couldn't be happier!</p>
-                    <div class="testimonial-author">
-                        <div class="author-image">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=120&auto=format&fit=crop" alt="David Rodriguez">
-                        </div>
-                        <div class="author-info">
-                            <h4>David Rodriguez</h4>
-                            <p>New Customer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="testimonial-rating">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">I've been shopping with ShopEase for years and have never been disappointed. Their selection is amazing and prices are unbeatable!</p>
-                    <div class="testimonial-author">
-                        <div class="author-image">
-                            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=120&auto=format&fit=crop" alt="Amanda Chen">
-                        </div>
-                        <div class="author-info">
-                            <h4>Amanda Chen</h4>
-                            <p>Frequent Shopper</p>
-                        </div>
+                
+                <div class="auth-banner">
+                    <div class="banner-content">
+                        <h2>Welcome to ShopEase</h2>
+                        <p>Login to your account to access:</p>
+                        <ul>
+                            <li><i class="fas fa-heart"></i> Your wishlist</li>
+                            <li><i class="fas fa-history"></i> Order history</li>
+                            <li><i class="fas fa-truck"></i> Faster checkout</li>
+                            <li><i class="fas fa-tag"></i> Exclusive deals</li>
+                        </ul>
+                        <img src="https://cdn.pixabay.com/photo/2016/03/22/09/08/online-1272410_1280.jpg" alt="Shopping online" class="banner-image">
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="newsletter">
-        <div class="container">
-            <h2>Subscribe to our Newsletter</h2>
-            <p>Get the latest updates on new products and upcoming sales. Join our 10,000+ subscribers.</p>
-            <form id="newsletter-form">
-                <input type="email" placeholder="Your email address" required>
-                <button type="submit" class="btn">Subscribe</button>
-            </form>
         </div>
     </section>
 
@@ -630,7 +168,7 @@
                 <div class="footer-links">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="home.html">Home</a></li>
                         <li><a href="products.html">Products</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -658,145 +196,10 @@
         </div>
     </footer>
 
-    <!-- Add the Auth Modal -->
-    <div class="modal" id="auth-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Login to Your Account</h2>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="auth-error" style="display: none;"></div>
-                
-                <div id="login-container" class="form-container">
-                    <form id="login-form" class="auth-form">
-                        <div class="form-group">
-                            <label for="login-email">Email Address</label>
-                            <input type="email" id="login-email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="login-password">Password</label>
-                            <input type="password" id="login-password" required>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                            <a href="#" class="forgot-password">Forgot Password?</a>
-                        </div>
-                    </form>
-                    
-                    <div class="auth-separator">
-                        <span>OR</span>
-                    </div>
-                    
-                    <div class="auth-switch">
-                        <p>Don't have an account? <a href="#" id="switch-to-register">Register</a></p>
-                    </div>
-                </div>
-                
-                <div id="register-container" class="form-container" style="display: none;">
-                    <form id="register-form" class="auth-form">
-                        <div class="form-group">
-                            <label for="register-name">Full Name</label>
-                            <input type="text" id="register-name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="register-email">Email Address</label>
-                            <input type="email" id="register-email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="register-password">Password</label>
-                            <input type="password" id="register-password" required>
-                            <small class="password-hint">Must be at least 6 characters long</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="register-confirm-password">Confirm Password</label>
-                            <input type="password" id="register-confirm-password" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="register-terms" required>
-                                I agree to the <a href="#">Terms & Conditions</a>
-                            </label>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </div>
-                    </form>
-                    
-                    <div class="auth-separator">
-                        <span>OR</span>
-                    </div>
-                    
-                    <div class="auth-switch">
-                        <p>Already have an account? <a href="#" id="switch-to-login">Login</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="js/products.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/wishlist.js"></script>
     <script src="js/main.js"></script>
-    <script>
-        // Countdown timer functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set the countdown date (2 days from now)
-            const countdownDate = new Date();
-            countdownDate.setDate(countdownDate.getDate() + 2);
-            
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const distance = countdownDate - now;
-                
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                
-                document.querySelector('.countdown-item:nth-child(1) .number').textContent = days.toString().padStart(2, '0');
-                document.querySelector('.countdown-item:nth-child(2) .number').textContent = hours.toString().padStart(2, '0');
-                document.querySelector('.countdown-item:nth-child(3) .number').textContent = minutes.toString().padStart(2, '0');
-                document.querySelector('.countdown-item:nth-child(4) .number').textContent = seconds.toString().padStart(2, '0');
-                
-                if (distance < 0) {
-                    clearInterval(countdownInterval);
-                    document.querySelector('.countdown').innerHTML = "EXPIRED";
-                }
-            }
-            
-            // Update the countdown every 1 second
-            updateCountdown();
-            const countdownInterval = setInterval(updateCountdown, 1000);
-        });
-
-        // Modal functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const modal = document.getElementById('auth-modal');
-            const closeModal = document.querySelector('.close-modal');
-            
-            if (closeModal && modal) {
-                closeModal.addEventListener('click', function() {
-                    modal.style.display = 'none';
-                });
-            }
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        });
-    </script>
 </body>
 </html> 

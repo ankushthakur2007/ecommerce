@@ -123,7 +123,7 @@ function handleLogin() {
         
         // Redirect if on login page
         if (window.location.pathname.includes('login.html')) {
-            window.location.href = 'index.html';
+            window.location.href = 'home.html';
         } else {
             // Refresh the current page to update any user-specific content
             location.reload();
@@ -205,7 +205,7 @@ function handleRegistration() {
     
     // Redirect if on register page
     if (window.location.pathname.includes('register.html')) {
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } else {
         // Refresh the current page to update any user-specific content
         location.reload();
@@ -220,7 +220,7 @@ function handleLogout() {
     
     // Redirect if on account page
     if (window.location.pathname.includes('account.html')) {
-        window.location.href = 'index.html';
+        window.location.href = 'home.html';
     } else {
         // Refresh the current page to update any user-specific content
         location.reload();
