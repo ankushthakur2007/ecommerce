@@ -1,23 +1,58 @@
 // Authentication functionality for ShopEase using Firebase
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Auth.js loaded");
-    // Wait for Firebase to be loaded
-    setTimeout(() => {
-        if (typeof firebase !== 'undefined' && window.googleProvider) {
-            console.log("Firebase SDK and Google provider loaded successfully");
+    
+    // First check if Firebase config is properly set
+    if (window.firebaseConfig && window.firebaseConfig.apiKey && 
+        window.firebaseConfig.apiKey !== "YOUR_API_KEY" && 
+        !window.firebaseConfig.apiKey.includes("YOUR_")) {
             
-            // Handle return from redirect
-            handleRedirectResult();
-            
-            // Initialize auth
-            initializeAuth();
-        } else {
-            console.error("Firebase SDK or Google provider not loaded");
-            console.log("Firebase available:", typeof firebase !== 'undefined');
-            console.log("Google provider available:", window.googleProvider !== undefined);
-        }
-    }, 1000);
+        // Wait for Firebase to be loaded
+        setTimeout(() => {
+            if (typeof firebase !== 'undefined' && window.googleProvider) {
+                console.log("Firebase SDK and Google provider loaded successfully");
+                
+                // Handle return from redirect
+                handleRedirectResult();
+                
+                // Initialize auth
+                initializeAuth();
+            } else {
+                console.error("Firebase SDK or Google provider not loaded");
+                console.log("Firebase available:", typeof firebase !== 'undefined');
+                console.log("Google provider available:", window.googleProvider !== undefined);
+                
+                showError("Firebase initialization failed. Check the console for details.");
+            }
+        }, 1000);
+    } else {
+        console.error("Firebase configuration is missing or invalid.");
+        showError("Firebase not properly configured. Please set up your Firebase project.");
+    }
 });
+
+// Show an error message on the page
+function showError(message) {
+    // Create error element if it doesn't exist
+    let errorElement = document.querySelector('.firebase-error');
+    if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'firebase-error';
+        errorElement.style.position = 'fixed';
+        errorElement.style.top = '0';
+        errorElement.style.left = '0';
+        errorElement.style.right = '0';
+        errorElement.style.padding = '15px';
+        errorElement.style.backgroundColor = '#f44336';
+        errorElement.style.color = 'white';
+        errorElement.style.textAlign = 'center';
+        errorElement.style.fontWeight = 'bold';
+        errorElement.style.zIndex = '10000';
+        document.body.prepend(errorElement);
+    }
+    
+    errorElement.textContent = message;
+}
 
 // Handle the return from a redirect sign-in
 function handleRedirectResult() {
@@ -52,10 +87,24 @@ function handleRedirectResult() {
                 }
             })
             .catch((error) => {
-                if (error.code !== 'auth/credential-already-in-use') {
-                    console.error("Redirect result error:", error);
-                    showAuthError(`Google login failed: ${error.message}`);
+                console.error("Redirect result error:", error);
+                
+                // Handle specific errors with clearer messages
+                let errorMessage;
+                
+                if (error.code === 'auth/invalid-api-key') {
+                    errorMessage = "Invalid Firebase API key. Please make sure your Firebase project is correctly set up.";
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage = "Network error. Please check your internet connection.";
+                } else if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
+                    errorMessage = "Authentication cancelled. Please try again.";
+                } else if (error.code === 'auth/popup-blocked') {
+                    errorMessage = "Popup was blocked by your browser. Please allow popups for this site.";
+                } else {
+                    errorMessage = `Google login failed: ${error.message}`;
                 }
+                
+                showAuthError(errorMessage);
             });
     } catch (error) {
         console.error("Error handling redirect result:", error);
@@ -184,6 +233,12 @@ function toggleAuthForms(formToShow) {
 function handleGoogleLogin() {
     try {
         console.log("Handling Google login");
+        
+        if (!firebase || !firebase.auth) {
+            showAuthError("Firebase authentication is not available. Check your Firebase configuration.");
+            return;
+        }
+        
         const provider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
         
         // Use signInWithRedirect instead of signInWithPopup to avoid popup blockers
@@ -195,7 +250,21 @@ function handleGoogleLogin() {
             })
             .catch((error) => {
                 console.error("Google login redirect error:", error);
-                showAuthError(`Google login failed: ${error.message}`);
+                
+                // Handle specific errors with clearer messages
+                let errorMessage;
+                
+                if (error.code === 'auth/invalid-api-key') {
+                    errorMessage = "Invalid Firebase API key. Please check your Firebase configuration.";
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage = "Network error. Please check your internet connection.";
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    errorMessage = "Google login is not enabled in your Firebase project. Please enable it in the Firebase console.";
+                } else {
+                    errorMessage = `Google login failed: ${error.message}`;
+                }
+                
+                showAuthError(errorMessage);
             });
     } catch (error) {
         console.error("Error in handleGoogleLogin:", error);
