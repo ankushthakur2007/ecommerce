@@ -2,33 +2,24 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Auth.js loaded");
     
-    // First check if Firebase config is properly set
-    if (window.firebaseConfig && window.firebaseConfig.apiKey && 
-        window.firebaseConfig.apiKey !== "YOUR_API_KEY" && 
-        !window.firebaseConfig.apiKey.includes("YOUR_")) {
+    // Wait for Firebase to be loaded
+    setTimeout(() => {
+        if (typeof firebase !== 'undefined') {
+            console.log("Firebase SDK loaded, initializing authentication");
             
-        // Wait for Firebase to be loaded
-        setTimeout(() => {
-            if (typeof firebase !== 'undefined' && window.googleProvider) {
-                console.log("Firebase SDK and Google provider loaded successfully");
-                
-                // Handle return from redirect
-                handleRedirectResult();
-                
-                // Initialize auth
-                initializeAuth();
-            } else {
-                console.error("Firebase SDK or Google provider not loaded");
-                console.log("Firebase available:", typeof firebase !== 'undefined');
-                console.log("Google provider available:", window.googleProvider !== undefined);
-                
-                showError("Firebase initialization failed. Check the console for details.");
-            }
-        }, 1000);
-    } else {
-        console.error("Firebase configuration is missing or invalid.");
-        showError("Firebase not properly configured. Please set up your Firebase project.");
-    }
+            // Handle return from redirect
+            handleRedirectResult();
+            
+            // Initialize auth
+            initializeAuth();
+            
+            // Check if we should redirect to home based on login state
+            checkRedirectToHome();
+        } else {
+            console.error("Firebase SDK not loaded after timeout");
+            showError("Firebase initialization failed. Check if Firebase scripts are properly loaded.");
+        }
+    }, 1000);
 });
 
 // Show an error message on the page
@@ -69,18 +60,8 @@ function handleRedirectResult() {
                     // Save user data
                     saveUserToDatabase(result.user)
                         .then(() => {
-                            // Close modal if it exists
-                            const modal = document.querySelector('.modal');
-                            if (modal) {
-                                modal.style.display = 'none';
-                            }
-                            
-                            // Redirect if on login page
-                            if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-                                window.location.href = 'home.html';
-                            } else {
-                                updateAuthUI();
-                            }
+                            // Redirect to home page
+                            redirectToHome();
                         });
                 } else {
                     console.log("No redirect result");
@@ -94,21 +75,56 @@ function handleRedirectResult() {
                 
                 if (error.code === 'auth/invalid-api-key') {
                     errorMessage = "Invalid Firebase API key. Please make sure your Firebase project is correctly set up.";
+                } else if (error.code === 'auth/unauthorized-domain') {
+                    errorMessage = "This domain is not authorized in Firebase. Add it in the Firebase Console.";
+                } else if (error.code === 'auth/user-disabled') {
+                    errorMessage = "This account has been disabled. Please contact support.";
+                } else if (error.code === 'auth/user-token-expired') {
+                    errorMessage = "Your session has expired. Please sign in again.";
+                } else if (error.code === 'auth/web-storage-unsupported') {
+                    errorMessage = "Web storage is not supported by your browser. Please enable cookies.";
                 } else if (error.code === 'auth/network-request-failed') {
                     errorMessage = "Network error. Please check your internet connection.";
-                } else if (error.code === 'auth/popup-closed-by-user' || error.code === 'auth/cancelled-popup-request') {
-                    errorMessage = "Authentication cancelled. Please try again.";
-                } else if (error.code === 'auth/popup-blocked') {
-                    errorMessage = "Popup was blocked by your browser. Please allow popups for this site.";
                 } else {
-                    errorMessage = `Google login failed: ${error.message}`;
+                    errorMessage = error.message || "An error occurred during sign-in.";
                 }
                 
-                showAuthError(errorMessage);
+                // Find or create an error element to display the message
+                const authError = document.querySelector('.auth-error');
+                if (authError) {
+                    authError.textContent = errorMessage;
+                    authError.style.display = 'block';
+                } else {
+                    showAuthError(errorMessage);
+                }
+                
+                // Reset any loading buttons
+                const googleBtn = document.querySelector('.btn-google');
+                if (googleBtn) {
+                    googleBtn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo"> Continue with Google';
+                    googleBtn.disabled = false;
+                }
             });
     } catch (error) {
         console.error("Error handling redirect result:", error);
     }
+}
+
+// Check if user is logged in and redirect to home page if on login page
+function checkRedirectToHome() {
+    // Only redirect if we're on the login page
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            console.log("User already logged in, redirecting to home page");
+            redirectToHome();
+        }
+    }
+}
+
+// Redirect to home page
+function redirectToHome() {
+    window.location.href = 'home.html';
 }
 
 // Initialize ShopEase object if it doesn't exist
@@ -239,79 +255,147 @@ function handleGoogleLogin() {
             return;
         }
         
+        // Clear any previous errors
+        const authError = document.querySelector('.auth-error');
+        if (authError) {
+            authError.style.display = 'none';
+        }
+        
+        // Show loading state on button
+        const googleBtn = document.querySelector('.btn-google');
+        if (googleBtn) {
+            const originalText = googleBtn.innerHTML;
+            googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+            googleBtn.disabled = true;
+            
+            // Reset button after 10 seconds (in case of silent failure)
+            setTimeout(() => {
+                googleBtn.innerHTML = originalText;
+                googleBtn.disabled = false;
+            }, 10000);
+        }
+        
         const provider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
         
-        // Use signInWithRedirect instead of signInWithPopup to avoid popup blockers
+        // Add scopes for additional permissions
+        provider.addScope('profile');
+        provider.addScope('email');
+        
+        // Always prompt for account selection
+        provider.setCustomParameters({
+            prompt: 'select_account'
+        });
+        
+        // Use signInWithRedirect for mobile compatibility
         firebase.auth().signInWithRedirect(provider)
             .then(() => {
                 console.log("Redirecting to Google login...");
                 // This promise resolves immediately after redirect initiated
                 // Actual auth handling happens in the getRedirectResult listener
             })
-            .catch((error) => {
-                console.error("Google login redirect error:", error);
+            .catch(error => {
+                console.error("Error initiating Google sign-in:", error);
                 
-                // Handle specific errors with clearer messages
+                // Reset button state
+                if (googleBtn) {
+                    googleBtn.innerHTML = originalText;
+                    googleBtn.disabled = false;
+                }
+                
+                // Show specific error message
                 let errorMessage;
                 
-                if (error.code === 'auth/invalid-api-key') {
-                    errorMessage = "Invalid Firebase API key. Please check your Firebase configuration.";
-                } else if (error.code === 'auth/network-request-failed') {
-                    errorMessage = "Network error. Please check your internet connection.";
-                } else if (error.code === 'auth/operation-not-allowed') {
-                    errorMessage = "Google login is not enabled in your Firebase project. Please enable it in the Firebase console.";
-                } else {
-                    errorMessage = `Google login failed: ${error.message}`;
+                switch(error.code) {
+                    case 'auth/unauthorized-domain':
+                        errorMessage = "This domain is not authorized for OAuth operations. Add your domain in the Firebase Console.";
+                        break;
+                    case 'auth/cancelled-popup-request':
+                    case 'auth/popup-closed-by-user':
+                        errorMessage = "The sign-in process was cancelled. Please try again.";
+                        break;
+                    case 'auth/popup-blocked':
+                        errorMessage = "The sign-in popup was blocked by your browser. Please allow popups for this site.";
+                        break;
+                    case 'auth/web-storage-unsupported':
+                        errorMessage = "Web storage is not supported or is disabled. Enable cookies in your browser.";
+                        break;
+                    default:
+                        errorMessage = error.message || "An error occurred during the Google sign-in process.";
                 }
                 
                 showAuthError(errorMessage);
             });
     } catch (error) {
-        console.error("Error in handleGoogleLogin:", error);
-        showAuthError("An unexpected error occurred. Please try again.");
+        console.error("Exception in handleGoogleLogin:", error);
+        showAuthError("An unexpected error occurred. Please try again later.");
     }
 }
 
-// Save user to database if they don't exist yet
+// Save user to database after successful login
 function saveUserToDatabase(user) {
-    try {
-        console.log("Saving user to database:", user.uid);
-        const db = window.db || firebase.firestore();
-        
-        return db.collection('users').doc(user.uid).get()
-            .then(doc => {
-                if (doc.exists) {
-                    console.log("User already exists in database");
-                    return Promise.resolve();
-                } else {
-                    console.log("Creating new user document");
-                    return db.collection('users').doc(user.uid).set({
-                        uid: user.uid,
-                        displayName: user.displayName || '',
-                        email: user.email || '',
-                        photoURL: user.photoURL || '',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-                        wishlist: [],
-                        cart: [],
-                        orders: []
-                    });
-                }
-            })
-            .then(() => {
-                // Update last login time
-                return db.collection('users').doc(user.uid).update({
-                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+    return new Promise((resolve, reject) => {
+        try {
+            console.log("Saving user to database:", user.uid);
+            
+            if (!window.db) {
+                console.error("Firestore not available");
+                // Still resolve to not block authentication flow
+                resolve();
+                return;
+            }
+            
+            // Reference to the user document
+            const userRef = window.db.collection('users').doc(user.uid);
+            
+            // Prepare user data
+            const userData = {
+                uid: user.uid,
+                email: user.email,
+                displayName: user.displayName || '',
+                photoURL: user.photoURL || '',
+                phoneNumber: user.phoneNumber || '',
+                lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            // Get the current user data first
+            userRef.get()
+                .then(doc => {
+                    if (doc.exists) {
+                        // Update existing user
+                        return userRef.update({
+                            ...userData,
+                            // Don't overwrite these fields if they exist
+                            createdAt: doc.data().createdAt,
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    } else {
+                        // Create new user
+                        return userRef.set({
+                            ...userData,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            // Initialize empty wishlist and cart arrays
+                            wishlist: [],
+                            cart: []
+                        });
+                    }
+                })
+                .then(() => {
+                    console.log("User data saved/updated successfully");
+                    resolve();
+                })
+                .catch(error => {
+                    console.error("Error saving user data:", error);
+                    // Still resolve to not block authentication flow
+                    resolve();
                 });
-            })
-            .catch(error => {
-                console.error("Error saving user to database:", error);
-                return Promise.reject(error);
-            });
-    } catch (error) {
-        console.error("Error in saveUserToDatabase:", error);
-        return Promise.reject(error);
-    }
+                
+        } catch (error) {
+            console.error("Exception in saveUserToDatabase:", error);
+            // Still resolve to not block authentication flow
+            resolve();
+        }
+    });
 }
 
 // Handle logout
