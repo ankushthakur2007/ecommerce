@@ -1,20 +1,21 @@
 // Firebase configuration for ShopEase
 console.log("Loading Firebase configuration");
 
-// Firebase configuration object
+// Firebase configuration object - use your own Firebase project details
 const firebaseConfig = {
-  apiKey: "AIzaSyBH6kM0FtYhXXEdRZfZ7eH4yJTrW8iUJ8Y",
-  authDomain: "shopease-ecommerce.firebaseapp.com",
-  projectId: "shopease-ecommerce",
-  storageBucket: "shopease-ecommerce.appspot.com",
-  messagingSenderId: "347883345672",
-  appId: "1:347883345672:web:5e1d9d3a43b77f8c7fc8fe",
-  measurementId: "G-9Q8CQCMQNV"
+  apiKey: "AIzaSyDdvHJrS9ZO7YMcSlgUUISMRtbJUE4iFJs",
+  authDomain: "shopease-ecommerce-64ce5.firebaseapp.com",
+  projectId: "shopease-ecommerce-64ce5",
+  storageBucket: "shopease-ecommerce-64ce5.appspot.com",
+  messagingSenderId: "125634368784",
+  appId: "1:125634368784:web:e3cae2b5be5b13e7d9f143",
+  measurementId: "G-JEYXSW5D4X"
 };
 
 // Initialize Firebase
 try {
   console.log("Initializing Firebase");
+  // Prevent duplicate initialization
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
@@ -23,29 +24,35 @@ try {
   const db = firebase.firestore();
   const auth = firebase.auth();
   
-  // Set persistence to SESSION
-  auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  // Set persistence to LOCAL to maintain login state on page refresh
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
     .then(() => {
-      console.log("Firebase persistence set to SESSION");
+      console.log("Firebase persistence set to LOCAL");
     })
     .catch(error => {
       console.error("Error setting persistence:", error);
     });
   
-  // Enable Google provider specifically
+  // Set up Google provider
   const googleProvider = new firebase.auth.GoogleAuthProvider();
+  
+  // Add scopes for additional permissions if needed
+  googleProvider.addScope('profile');
+  googleProvider.addScope('email');
+  
+  // Always prompt for account selection
   googleProvider.setCustomParameters({
     prompt: 'select_account'
   });
   
   console.log("Firebase initialized successfully");
   
-  // Export objects to global scope for use in other files
+  // Make Firebase objects globally available
   window.db = db;
   window.auth = auth;
   window.googleProvider = googleProvider;
   
-  // Export as shopEase namespace
+  // Export as ShopEase namespace
   window.shopEase = window.shopEase || {};
   window.shopEase.firebase = {
     auth,
@@ -59,17 +66,21 @@ try {
 
 // Test database connection
 if (window.db) {
-  window.db.collection('test').doc('connection')
-    .set({
-      timestamp: new Date().toISOString(),
-      status: 'Connection test successful'
-    })
-    .then(() => {
-      console.log("Database connection successful");
-    })
-    .catch(error => {
-      console.error("Database connection error:", error);
-    });
+  try {
+    window.db.collection('test').doc('connection')
+      .set({
+        timestamp: new Date().toISOString(),
+        status: 'Connection test successful'
+      })
+      .then(() => {
+        console.log("Database connection successful");
+      })
+      .catch(error => {
+        console.error("Database connection error:", error);
+      });
+  } catch (error) {
+    console.error("Error testing database connection:", error);
+  }
 }
 
 // Export the Firebase configuration

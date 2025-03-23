@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         if (typeof firebase !== 'undefined' && window.googleProvider) {
             console.log("Firebase SDK and Google provider loaded successfully");
+            
+            // Handle return from redirect
+            handleRedirectResult();
+            
+            // Initialize auth
             initializeAuth();
         } else {
             console.error("Firebase SDK or Google provider not loaded");
@@ -13,6 +18,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 1000);
 });
+
+// Handle the return from a redirect sign-in
+function handleRedirectResult() {
+    try {
+        console.log("Checking for redirect result");
+        
+        firebase.auth().getRedirectResult()
+            .then((result) => {
+                if (result.user) {
+                    // User successfully signed in
+                    console.log("Google redirect login successful", result.user);
+                    showNotification("Successfully logged in with Google!");
+                    
+                    // Save user data
+                    saveUserToDatabase(result.user)
+                        .then(() => {
+                            // Close modal if it exists
+                            const modal = document.querySelector('.modal');
+                            if (modal) {
+                                modal.style.display = 'none';
+                            }
+                            
+                            // Redirect if on login page
+                            if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                                window.location.href = 'home.html';
+                            } else {
+                                updateAuthUI();
+                            }
+                        });
+                } else {
+                    console.log("No redirect result");
+                }
+            })
+            .catch((error) => {
+                if (error.code !== 'auth/credential-already-in-use') {
+                    console.error("Redirect result error:", error);
+                    showAuthError(`Google login failed: ${error.message}`);
+                }
+            });
+    } catch (error) {
+        console.error("Error handling redirect result:", error);
+    }
+}
 
 // Initialize ShopEase object if it doesn't exist
 if (!window.shopEase) {
@@ -138,31 +186,15 @@ function handleGoogleLogin() {
         console.log("Handling Google login");
         const provider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
         
-        firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                // Handle successful login
-                console.log("Google login successful", result.user);
-                showNotification("Successfully logged in with Google!");
-                
-                // Save user data
-                saveUserToDatabase(result.user)
-                    .then(() => {
-                        // Close modal if it exists
-                        const modal = document.querySelector('.modal');
-                        if (modal) {
-                            modal.style.display = 'none';
-                        }
-                        
-                        // Redirect if on login page
-                        if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-                            window.location.href = 'home.html';
-                        } else {
-                            updateAuthUI();
-                        }
-                    });
+        // Use signInWithRedirect instead of signInWithPopup to avoid popup blockers
+        firebase.auth().signInWithRedirect(provider)
+            .then(() => {
+                console.log("Redirecting to Google login...");
+                // This promise resolves immediately after redirect initiated
+                // Actual auth handling happens in the getRedirectResult listener
             })
             .catch((error) => {
-                console.error("Google login error:", error);
+                console.error("Google login redirect error:", error);
                 showAuthError(`Google login failed: ${error.message}`);
             });
     } catch (error) {
