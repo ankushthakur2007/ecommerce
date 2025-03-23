@@ -883,4 +883,36 @@ window.shopEase.showAuthModal = function(mode = 'login') {
     
     // Show the modal
     modal.style.display = 'block';
-}; 
+};
+
+// Initialize shop object if it doesn't exist
+if (!window.shopEase) {
+    window.shopEase = {};
+}
+
+// Document ready function
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    
+    // Initialize all modules
+    initializeMobileMenu();
+    initializeNavigation();
+    initializeProductFilters();
+    initializeImageGallery();
+    initializeSearchBar();
+    
+    // Initialize authentication and firebase dependent features
+    // Wait for Firebase to be loaded
+    setTimeout(() => {
+        if (typeof firebase !== 'undefined') {
+            console.log("Firebase SDK loaded in main.js");
+            initializeAuth(); // Call auth initialization
+            
+            // Initialize features that depend on authentication
+            initializeWishlist();
+            initializeCart();
+        } else {
+            console.error("Firebase SDK not loaded in main.js");
+        }
+    }, 800);
+}); 

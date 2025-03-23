@@ -1,6 +1,14 @@
 // Authentication functionality for ShopEase using Firebase
 document.addEventListener('DOMContentLoaded', function() {
-    initializeAuth();
+    // Wait for Firebase to be loaded
+    setTimeout(() => {
+        if (typeof firebase !== 'undefined') {
+            console.log("Firebase SDK loaded successfully");
+            initializeAuth();
+        } else {
+            console.error("Firebase SDK not loaded");
+        }
+    }, 500);
 });
 
 // Initialize ShopEase object if it doesn't exist
@@ -10,36 +18,51 @@ if (!window.shopEase) {
 
 // Initialize authentication
 function initializeAuth() {
-    // Check if Firebase is loaded
-    if (typeof firebase === 'undefined') {
-        console.error('Firebase SDK not loaded');
-        return;
-    }
-    
-    // Listen for auth state changes
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            // User is signed in
-            getUserData(user.uid).then(userData => {
-                if (!userData) {
-                    // Create user document if it doesn't exist
-                    createUserDocument(user);
-                }
-                updateAuthUI();
-                
-                // Redirect to home page if on login page
-                if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
-                    window.location.href = 'home.html';
-                }
-            });
-        } else {
-            // User is signed out
-            updateAuthUI();
+    try {
+        // Check if Firebase is loaded
+        if (typeof firebase === 'undefined') {
+            console.error('Firebase SDK not loaded');
+            return;
         }
-    });
-    
-    setupAuthEventListeners();
-    setupSocialLogin();
+        
+        console.log("Initializing Firebase Auth");
+        
+        // Listen for auth state changes
+        firebase.auth().onAuthStateChanged(function(user) {
+            console.log("Auth state changed:", user ? "User logged in" : "User logged out");
+            
+            if (user) {
+                // User is signed in
+                getUserData(user.uid).then(userData => {
+                    console.log("User data retrieved:", userData);
+                    
+                    if (!userData) {
+                        // Create user document if it doesn't exist
+                        console.log("Creating user document");
+                        createUserDocument(user)
+                            .then(() => console.log("User document created successfully"))
+                            .catch(err => console.error("Error creating user document:", err));
+                    }
+                    
+                    updateAuthUI();
+                    
+                    // Redirect to home page if on login page
+                    if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+                        console.log("Redirecting to home page");
+                        window.location.href = 'home.html';
+                    }
+                });
+            } else {
+                // User is signed out
+                updateAuthUI();
+            }
+        });
+        
+        setupAuthEventListeners();
+        setupSocialLogin();
+    } catch (error) {
+        console.error("Error in initializeAuth:", error);
+    }
 }
 
 // Setup event listeners for auth-related buttons and forms
@@ -325,34 +348,57 @@ function handleRegistration() {
 
 // Create user document in Firestore
 function createUserDocument(user, additionalData = {}) {
-    const db = firebase.firestore();
-    
-    return db.collection('users').doc(user.uid).set({
-        uid: user.uid,
-        email: user.email,
-        name: additionalData.name || user.displayName || '',
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        wishlist: [],
-        addresses: [],
-        orders: []
-    }, { merge: true });
+    try {
+        const db = firebase.firestore();
+        console.log("Creating user document for:", user.uid);
+        
+        return db.collection('users').doc(user.uid).set({
+            uid: user.uid,
+            email: user.email,
+            name: additionalData.name || user.displayName || '',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            wishlist: [],
+            addresses: [],
+            orders: []
+        }, { merge: true })
+        .then(() => {
+            console.log("User document created successfully");
+            return true;
+        })
+        .catch(error => {
+            console.error("Error creating user document:", error);
+            throw error;
+        });
+    } catch (error) {
+        console.error("Error in createUserDocument:", error);
+        return Promise.reject(error);
+    }
 }
 
 // Get user data from Firestore
 function getUserData(uid) {
-    const db = firebase.firestore();
-    return db.collection('users').doc(uid).get()
-        .then(doc => {
-            if (doc.exists) {
-                return doc.data();
-            } else {
+    try {
+        const db = firebase.firestore();
+        console.log("Getting user data for:", uid);
+        
+        return db.collection('users').doc(uid).get()
+            .then(doc => {
+                if (doc.exists) {
+                    console.log("User document found");
+                    return doc.data();
+                } else {
+                    console.log("No user document found");
+                    return null;
+                }
+            })
+            .catch(error => {
+                console.error("Error getting user data:", error);
                 return null;
-            }
-        })
-        .catch(error => {
-            console.error("Error getting user data:", error);
-            return null;
-        });
+            });
+    } catch (error) {
+        console.error("Error in getUserData:", error);
+        return Promise.resolve(null);
+    }
 }
 
 // Handle user logout
@@ -577,47 +623,65 @@ function getUserAddresses() {
 
 // Update UI based on authentication status
 function updateAuthUI() {
-    const user = firebase.auth().currentUser;
-    const isLoggedIn = !!user;
-    
-    // Update header
-    const authContainer = document.querySelector('.auth-container');
-    if (authContainer) {
-        if (isLoggedIn) {
-            authContainer.innerHTML = `
-                <div class="dropdown">
-                    <button class="btn btn-sm dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user"></i> ${user.displayName || 'Account'}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="account.html">My Account</a></li>
-                        <li><a class="dropdown-item" href="orders.html">My Orders</a></li>
-                        <li><a class="dropdown-item" href="wishlist.html">My Wishlist</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
-                    </ul>
-                </div>
-            `;
-            
-            // Reattach logout event
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    handleLogout();
-                });
+    try {
+        const user = firebase.auth().currentUser;
+        const isLoggedIn = !!user;
+        console.log("Updating UI for auth state:", isLoggedIn ? "logged in" : "logged out");
+        
+        // Update header
+        const authContainer = document.querySelector('.auth-container');
+        if (authContainer) {
+            if (isLoggedIn) {
+                authContainer.innerHTML = `
+                    <div class="dropdown">
+                        <button class="btn btn-sm dropdown-toggle auth-link" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user"></i> ${user.displayName || 'Account'}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="account.html">My Account</a></li>
+                            <li><a class="dropdown-item" href="orders.html">My Orders</a></li>
+                            <li><a class="dropdown-item" href="wishlist.html">My Wishlist</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
+                        </ul>
+                    </div>
+                `;
+                
+                // Reattach logout event
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        handleLogout();
+                    });
+                }
+            } else {
+                // Check if we're on a page that has an auth-modal
+                const hasAuthModal = document.getElementById('auth-modal');
+                
+                if (hasAuthModal) {
+                    // This page has an auth modal, use that
+                    authContainer.innerHTML = `
+                        <a href="#" class="login-btn" data-bs-toggle="modal" data-bs-target="#auth-modal">
+                            <i class="fas fa-user"></i> Login
+                        </a>
+                    `;
+                } else {
+                    // No auth modal, redirect to index.html
+                    authContainer.innerHTML = `
+                        <a href="index.html" class="login-btn">
+                            <i class="fas fa-user"></i> Login
+                        </a>
+                    `;
+                }
             }
-        } else {
-            authContainer.innerHTML = `
-                <a href="#" class="login-btn" data-bs-toggle="modal" data-bs-target="#auth-modal">
-                    <i class="fas fa-user"></i> Login
-                </a>
-            `;
         }
+        
+        // Update account page if it exists
+        populateAccountPage();
+    } catch (error) {
+        console.error("Error in updateAuthUI:", error);
     }
-    
-    // Update account page if it exists
-    populateAccountPage();
 }
 
 // Populate account page with user data
