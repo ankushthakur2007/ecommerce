@@ -5191,3 +5191,107 @@ a:focus, button:focus, input:focus, select:focus, textarea:focus {
         margin-bottom: 10px;
     }
 }
+
+/* Google Login Button */
+.google-login-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: white;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.google-login-btn:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.google-login-btn img {
+    width: 24px;
+    margin-right: 10px;
+}
+
+.auth-form-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.auth-desc {
+    margin-bottom: 20px;
+    color: #666;
+}
+
+.login-help {
+    font-size: 14px;
+    color: #666;
+    margin-top: 20px;
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Error message styling */
+.auth-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: left;
+    border: 1px solid #f5c6cb;
+}
+
+/* User profile dropdown styles */
+.user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .google-login-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+    
+    .login-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
+    
+    .notification {
+        left: 20px;
+        right: 20px;
+        text-align: center;
+    }
+}
