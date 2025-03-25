@@ -278,21 +278,15 @@ function handleGoogleLogin() {
         // Get the Google provider from the global scope
         const provider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
         
-        // Use signInWithPopup instead of signInWithRedirect for better error handling
-        firebase.auth().signInWithPopup(provider)
-            .then((result) => {
-                console.log("Google sign-in successful", result.user);
-                showNotification("Successfully logged in with Google!");
-                
-                // Save user data
-                saveUserToDatabase(result.user)
-                    .then(() => {
-                        // Redirect to home page
-                        redirectToHome();
-                    });
+        // Use signInWithRedirect for better mobile compatibility
+        firebase.auth().signInWithRedirect(provider)
+            .then(() => {
+                console.log("Redirecting to Google login...");
+                // This promise resolves immediately after redirect initiated
+                // Actual auth handling happens in the getRedirectResult listener
             })
             .catch(error => {
-                console.error("Error during Google sign-in:", error);
+                console.error("Error initiating Google sign-in:", error);
                 
                 // Reset button state
                 if (googleBtn) {
