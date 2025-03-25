@@ -29,121 +29,83 @@ const firebaseConfig = {
 // Initialize Firebase
 try {
   console.log("Initializing Firebase");
-  // Prevent duplicate initialization
-  if (typeof firebase !== 'undefined') {
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    
-    // Initialize Firebase services
-    const db = firebase.firestore();
-    const auth = firebase.auth();
-    
-    // Set persistence to LOCAL to maintain login state on page refresh
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .then(() => {
-        console.log("Firebase persistence set to LOCAL");
-      })
-      .catch(error => {
-        console.error("Error setting persistence:", error);
-        
-        // Show the API key error more clearly
-        if (error.code === 'auth/invalid-api-key') {
-          console.error("Your Firebase API key is invalid. Please make sure you've copied it correctly from the Firebase console.");
-          document.addEventListener('DOMContentLoaded', function() {
-            const errorDiv = document.createElement('div');
-            errorDiv.style.position = 'fixed';
-            errorDiv.style.top = '0';
-            errorDiv.style.left = '0';
-            errorDiv.style.right = '0';
-            errorDiv.style.padding = '20px';
-            errorDiv.style.backgroundColor = '#f44336';
-            errorDiv.style.color = 'white';
-            errorDiv.style.textAlign = 'center';
-            errorDiv.style.zIndex = '10000';
-            errorDiv.innerHTML = 'Invalid Firebase API key: Make sure your Firebase project is properly set up';
-            document.body.prepend(errorDiv);
-          });
-        }
-      });
-    
-    // Set up Google provider
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    
-    // Add scopes for additional permissions if needed
-    googleProvider.addScope('profile');
-    googleProvider.addScope('email');
-    
-    // Always prompt for account selection
-    googleProvider.setCustomParameters({
-      prompt: 'select_account'
-    });
-    
-    console.log("Firebase initialized successfully");
-    
-    // Make Firebase objects globally available
-    window.db = db;
-    window.auth = auth;
-    window.googleProvider = googleProvider;
-    
-    // Export as ShopEase namespace
-    window.shopEase = window.shopEase || {};
-    window.shopEase.firebase = {
-      auth,
-      db,
-      googleProvider
-    };
-    
-    // Test database connection
-    db.collection('test').doc('connection')
-      .set({
-        timestamp: new Date().toISOString(),
-        status: 'Connection test successful'
-      })
-      .then(() => {
-        console.log("Database connection successful");
-      })
-      .catch(error => {
-        console.error("Database connection error:", error);
-        
-        // Display error if Firestore not enabled
-        if (error.code === 'permission-denied' || error.code === 'service-unavailable' || 
-            error.code === 'resource-exhausted') {
-          document.addEventListener('DOMContentLoaded', function() {
-            const errorDiv = document.createElement('div');
-            errorDiv.style.position = 'fixed';
-            errorDiv.style.top = '0';
-            errorDiv.style.left = '0';
-            errorDiv.style.right = '0';
-            errorDiv.style.padding = '20px';
-            errorDiv.style.backgroundColor = '#ff9800';
-            errorDiv.style.color = 'white';
-            errorDiv.style.textAlign = 'center';
-            errorDiv.style.zIndex = '10000';
-            errorDiv.innerHTML = 'Firebase Database error: Make sure to enable Firestore in your Firebase console';
-            document.body.prepend(errorDiv);
-          });
-        }
-      });
-  } else {
-    console.error("Firebase SDK not loaded. Check your script includes.");
-    
-    // Display error on the page
-    document.addEventListener('DOMContentLoaded', function() {
-      const errorDiv = document.createElement('div');
-      errorDiv.style.position = 'fixed';
-      errorDiv.style.top = '0';
-      errorDiv.style.left = '0';
-      errorDiv.style.right = '0';
-      errorDiv.style.padding = '20px';
-      errorDiv.style.backgroundColor = '#f44336';
-      errorDiv.style.color = 'white';
-      errorDiv.style.textAlign = 'center';
-      errorDiv.style.zIndex = '10000';
-      errorDiv.innerHTML = 'Firebase SDK not loaded. Check the console for details.';
-      document.body.prepend(errorDiv);
-    });
+  
+  // Initialize Firebase if not already initialized
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
   }
+  
+  // Initialize Firebase services
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+  
+  // Set persistence to LOCAL to maintain login state
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      console.log("Firebase persistence set to LOCAL");
+    })
+    .catch(error => {
+      console.error("Error setting persistence:", error);
+    });
+  
+  // Set up Google provider
+  const googleProvider = new firebase.auth.GoogleAuthProvider();
+  
+  // Add scopes for additional permissions
+  googleProvider.addScope('profile');
+  googleProvider.addScope('email');
+  
+  // Always prompt for account selection
+  googleProvider.setCustomParameters({
+    prompt: 'select_account'
+  });
+  
+  console.log("Firebase initialized successfully");
+  
+  // Make Firebase objects globally available
+  window.db = db;
+  window.auth = auth;
+  window.googleProvider = googleProvider;
+  
+  // Export as ShopEase namespace
+  window.shopEase = window.shopEase || {};
+  window.shopEase.firebase = {
+    auth,
+    db,
+    googleProvider
+  };
+  
+  // Test database connection
+  db.collection('test').doc('connection')
+    .set({
+      timestamp: new Date().toISOString(),
+      status: 'Connection test successful'
+    })
+    .then(() => {
+      console.log("Database connection successful");
+    })
+    .catch(error => {
+      console.error("Database connection error:", error);
+      
+      // Display error if Firestore not enabled
+      if (error.code === 'permission-denied' || error.code === 'service-unavailable' || 
+          error.code === 'resource-exhausted') {
+        document.addEventListener('DOMContentLoaded', function() {
+          const errorDiv = document.createElement('div');
+          errorDiv.style.position = 'fixed';
+          errorDiv.style.top = '0';
+          errorDiv.style.left = '0';
+          errorDiv.style.right = '0';
+          errorDiv.style.padding = '20px';
+          errorDiv.style.backgroundColor = '#ff9800';
+          errorDiv.style.color = 'white';
+          errorDiv.style.textAlign = 'center';
+          errorDiv.style.zIndex = '10000';
+          errorDiv.innerHTML = 'Firebase Database error: Make sure to enable Firestore in your Firebase console';
+          document.body.prepend(errorDiv);
+        });
+      }
+    });
 } catch (error) {
   console.error("Error initializing Firebase:", error);
   

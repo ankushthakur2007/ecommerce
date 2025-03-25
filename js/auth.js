@@ -275,26 +275,24 @@ function handleGoogleLogin() {
             }, 10000);
         }
         
+        // Get the Google provider from the global scope
         const provider = window.googleProvider || new firebase.auth.GoogleAuthProvider();
         
-        // Add scopes for additional permissions
-        provider.addScope('profile');
-        provider.addScope('email');
-        
-        // Always prompt for account selection
-        provider.setCustomParameters({
-            prompt: 'select_account'
-        });
-        
-        // Use signInWithRedirect for mobile compatibility
-        firebase.auth().signInWithRedirect(provider)
-            .then(() => {
-                console.log("Redirecting to Google login...");
-                // This promise resolves immediately after redirect initiated
-                // Actual auth handling happens in the getRedirectResult listener
+        // Use signInWithPopup instead of signInWithRedirect for better error handling
+        firebase.auth().signInWithPopup(provider)
+            .then((result) => {
+                console.log("Google sign-in successful", result.user);
+                showNotification("Successfully logged in with Google!");
+                
+                // Save user data
+                saveUserToDatabase(result.user)
+                    .then(() => {
+                        // Redirect to home page
+                        redirectToHome();
+                    });
             })
             .catch(error => {
-                console.error("Error initiating Google sign-in:", error);
+                console.error("Error during Google sign-in:", error);
                 
                 // Reset button state
                 if (googleBtn) {
@@ -307,7 +305,7 @@ function handleGoogleLogin() {
                 
                 switch(error.code) {
                     case 'auth/unauthorized-domain':
-                        errorMessage = "This domain is not authorized for OAuth operations. Add your domain in the Firebase Console.";
+                        errorMessage = "This domain is not authorized in Firebase. Add it in the Firebase Console.";
                         break;
                     case 'auth/cancelled-popup-request':
                     case 'auth/popup-closed-by-user':
@@ -317,17 +315,34 @@ function handleGoogleLogin() {
                         errorMessage = "The sign-in popup was blocked by your browser. Please allow popups for this site.";
                         break;
                     case 'auth/web-storage-unsupported':
-                        errorMessage = "Web storage is not supported or is disabled. Enable cookies in your browser.";
+                        errorMessage = "Web storage is not supported by your browser. Please enable cookies.";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your internet connection.";
                         break;
                     default:
                         errorMessage = error.message || "An error occurred during the Google sign-in process.";
                 }
                 
-                showAuthError(errorMessage);
+                // Find or create an error element to display the message
+                const authError = document.querySelector('.auth-error');
+                if (authError) {
+                    authError.textContent = errorMessage;
+                    authError.style.display = 'block';
+                } else {
+                    showAuthError(errorMessage);
+                }
             });
     } catch (error) {
         console.error("Exception in handleGoogleLogin:", error);
         showAuthError("An unexpected error occurred. Please try again later.");
+        
+        // Reset button state
+        const googleBtn = document.querySelector('.btn-google');
+        if (googleBtn) {
+            googleBtn.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo"> Continue with Google';
+            googleBtn.disabled = false;
+        }
     }
 }
 
